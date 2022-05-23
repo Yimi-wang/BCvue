@@ -123,7 +123,7 @@ public class Client {
             case 1:
                 j.playerNow = j.playerFirst;
                 if (j.getPlayerNow() == 1) {
-                    playCards.playerFirstPlayCard();
+                    playCards.playerFirstPlayCard(j);
                     objectOutput.writeObject(j);
                     objectOutput.flush();
                     System.out.println("fa song cheng gong ");
@@ -138,7 +138,7 @@ public class Client {
                 j.playerNow = j.playerNow + 1;
                 if (j.playerNow == 2) j.playerNow = 0;
                 if (j.getPlayerNow() == 1) {
-                    playCards.playerSecondePlayCard();
+                    playCards.playerSecondePlayCard(j);
                     objectOutput.writeObject(j);
                     objectOutput.flush();
                     System.out.println("fa song cheng gong ");
@@ -155,7 +155,7 @@ public class Client {
                     j.playerNow = j.Playerwin;
                     if (j.playerNow == 2) j.playerNow = 0;
                     if (j.playerNow == 1) {
-                        takeCard.playerWinTakeCard();
+                        takeCard.playerWinTakeCard(j);
                         objectOutput.writeObject(j);
                         objectOutput.flush();
                         System.out.println("fa song cheng gong ");
@@ -173,7 +173,7 @@ public class Client {
                     j.playerNow = j.Playerwin + 1;
                     if (j.playerNow == 2) j.playerNow = 0;
                     if (j.playerNow == 1) {
-                        takeCard.playerLoseTakeCard();
+                        takeCard.playerLoseTakeCard(j);
                         objectOutput.writeObject(j);
                         objectOutput.flush();
                         System.out.println("fa song cheng gong ");

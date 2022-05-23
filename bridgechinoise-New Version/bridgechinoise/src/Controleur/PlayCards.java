@@ -19,7 +19,7 @@ public class PlayCards {
     }
 
 
-    public void playerFirstPlayCard() {
+    public Jeu playerFirstPlayCard(Jeu j) {
         //输入先手方想出的牌
         System.out.println("Maintenant c'est le tour de Jouer" + (j.playerNow + 1));
         System.out.println(("Donned le index que vous voulez jouer"));
@@ -28,20 +28,21 @@ public class PlayCards {
         //回退历史记录
         if (index == -1) {
             h.returnHistoire();
-            return;
+            return j;
         }
         //保存读取
         if(index==-2){
             SL.saveorload(h);
-            return;
+            return j;
         }
         //进行出牌操作
-        playCards(index);
+        j=playCards(j,index);
         //打印先手方出的牌
         System.out.println((j.playerNow + 1) + "jouer" + j.FirstPlayerPlayCard.toString());
+        return j;
     }
 
-    public void playerSecondePlayCard() {
+    public Jeu playerSecondePlayCard(Jeu j) {
         //输入后手方想出的牌
         System.out.println("Maintenant c'est le tour de Jouer" + (j.playerNow + 1));
         System.out.println(("Donned le index que vous voulez jouer"));
@@ -50,15 +51,15 @@ public class PlayCards {
         //回退历史记录
         if (index == -1) {
             h.returnHistoire();
-            return;
+            return j;
         }
         //保存读取
         if(index==-2){
             SL.saveorload(h);
-            return;
+            return j;
         }
         //进行出牌操作
-        playCards(index);
+        playCards(j,index);
         //打印后手方出的牌
         System.out.println((j.playerNow + 1) + "jouer" + j.SecondPlayerPlayerCard.toString());
         j = comparer(j);
@@ -74,9 +75,10 @@ public class PlayCards {
         }
         System.out.println(("Player 1 score est " + j.Player1Score + ". Player 2 Score est " + j.Player2Score));
         if (j.numberOfRounds > 15) j.numberOfRounds++;
+        return j;
     }
 
-    public void IAplaycard(Jeu j, int IA) {
+    public Jeu IAplaycard(Jeu j, int IA) {
         System.out.println("numbre of Rounds est " + j.numberOfRounds);
         int index = 0;
         j.showCard();
@@ -107,7 +109,7 @@ public class PlayCards {
         } else {
             System.out.println("IA 2 jouer" + j.playercard[j.playerNow].get(index).toString());
         }
-        playCards(index);
+        playCards(j,index);
         //打印IA出的牌
         if (j.playerNow != j.playerFirst) {
             j = comparer(j);
@@ -127,11 +129,11 @@ public class PlayCards {
         }
         Jeu j2 = (Jeu) j.clone();
         h.ajouteListDeHistoire(j2);
-
+        return j;
     }
 
     //实现将玩家选择的牌放到jeu数据里头，同时将该牌从手牌中删除
-    void playCards(int index) {
+    Jeu playCards(Jeu j,int index) {
         if (j.playerNow == j.playerFirst) {
             j.FirstPlayerPlayCard = j.playercard[j.playerNow].get(index);
             j.playercard[j.playerNow].remove(index);
@@ -147,6 +149,7 @@ public class PlayCards {
             j.playercard[j.playerNow].remove(index);
         }
         j.TurnProcess++;
+        return j;
     }
 
     public boolean limite(Jeu j, Brand card) {

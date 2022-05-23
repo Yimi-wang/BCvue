@@ -19,7 +19,7 @@ public class TakeCard {
     }
 
 
-    public void playerWinTakeCard() {
+    public void playerWinTakeCard(Jeu j) {
         //赢家拿牌
         System.out.println("Maintenant c'est le tour de Jouer" + (j.Playerwin + 1));
         System.out.println(("Donned le index que vous voulez prendre"));
@@ -46,7 +46,7 @@ public class TakeCard {
 
     }
 
-    public void playerLoseTakeCard() {
+    public void playerLoseTakeCard(Jeu j) {
         int a = j.Playerwin + 1;
         if (a == 2) a = 0;
         System.out.println("Maintenant c'est le tour de Jouer" + (a + 1));

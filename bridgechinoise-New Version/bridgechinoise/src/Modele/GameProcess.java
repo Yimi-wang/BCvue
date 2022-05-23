@@ -281,9 +281,9 @@ public class GameProcess {
             case 1:
                 j.playerNow = j.playerFirst;
                 if (IA > 0 && j.getPlayerNow() == 1) {
-                    playCards.IAplaycard(j, IA);
+                    this.j=playCards.IAplaycard(j, IA);
                 } else {
-                    playCards.playerFirstPlayCard();
+                    this.j=playCards.playerFirstPlayCard(j);
                 }
                 Jeu j1 = (Jeu) j.clone();
                 h.ajouteListDeHistoire(j1);
@@ -293,9 +293,9 @@ public class GameProcess {
                 j.playerNow = j.playerNow + 1;
                 if (j.playerNow == 2) j.playerNow = 0;
                 if (IA > 0 && j.getPlayerNow() == 1) {
-                    playCards.IAplaycard(j, IA);
+                    this.j=playCards.IAplaycard(j, IA);
                 } else {
-                    playCards.playerSecondePlayCard();
+                    this.j=playCards.playerSecondePlayCard(j);
                 }
                 Jeu j2 = (Jeu) j.clone();
                 h.ajouteListDeHistoire(j2);
@@ -309,7 +309,7 @@ public class GameProcess {
                     if (IA > 0 && j.playerNow == 1) {
                         takeCard.IAtakecard(j, IA);
                     } else {
-                        takeCard.playerWinTakeCard();
+                        takeCard.playerWinTakeCard(j);
                     }
 
                     Jeu j3 = (Jeu) j.clone();
@@ -325,7 +325,7 @@ public class GameProcess {
                     if (IA > 0 && j.playerNow == 1) {
                         takeCard.IAtakecard(j, IA);
                     } else {
-                        takeCard.playerLoseTakeCard();
+                        takeCard.playerLoseTakeCard(j);
                     }
                     Jeu j4 = (Jeu) j.clone();
                     h.ajouteListDeHistoire(j4);

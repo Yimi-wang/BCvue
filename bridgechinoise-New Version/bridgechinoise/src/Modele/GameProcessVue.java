@@ -126,7 +126,7 @@ public class GameProcessVue {
                     while (j.numberOfRounds != 26) {
                         if (j.TurnProcess == 5)
                             j.TurnProcess = 1;
-                        turnstart(h);
+                        this.j=turnstart(h);
                         System.out.println(j.Player1totalScore);
                         if (j.Player1totalScore >= ScoreWin || j.Player2totalScore >= ScoreWin) {
                             if (j.Player1totalScore > j.Player2totalScore) {
@@ -239,7 +239,7 @@ public class GameProcessVue {
     }
 
 
-    public void turnstart(Histoire h) {
+    public Jeu turnstart(Histoire h) {
         j = h.listDeHistoire.get(h.listDeHistoire.size() - 1);
         playCards = new PlayCards(j, h);
         takeCard = new TakeCard(j, h);
@@ -248,9 +248,9 @@ public class GameProcessVue {
             case 1:
                 j.playerNow = j.playerFirst;
                 if (IA > 0 && j.getPlayerNow() == 1) {
-                    playCards.IAplaycard(j, IA);
+                    this.j=playCards.IAplaycard(j, IA);
                 } else {
-                    playCards.playerFirstPlayCard();
+                    this.j=playCards.playerFirstPlayCard(j);
                 }
                 Jeu j1 = (Jeu) j.clone();
                 h.ajouteListDeHistoire(j1);
@@ -260,9 +260,9 @@ public class GameProcessVue {
                 j.playerNow = j.playerNow + 1;
                 if (j.playerNow == 2) j.playerNow = 0;
                 if (IA > 0 && j.getPlayerNow() == 1) {
-                    playCards.IAplaycard(j, IA);
+                    this.j=playCards.IAplaycard(j, IA);
                 } else {
-                    playCards.playerSecondePlayCard();
+                    this.j=playCards.playerSecondePlayCard(j);
                 }
                 Jeu j2 = (Jeu) j.clone();
                 h.ajouteListDeHistoire(j2);
@@ -276,7 +276,7 @@ public class GameProcessVue {
                     if (IA > 0 && j.playerNow == 1) {
                         takeCard.IAtakecard(j, IA);
                     } else {
-                        takeCard.playerWinTakeCard();
+                        takeCard.playerWinTakeCard(j);
                     }
 
                     Jeu j3 = (Jeu) j.clone();
@@ -292,7 +292,7 @@ public class GameProcessVue {
                     if (IA > 0 && j.playerNow == 1) {
                         takeCard.IAtakecard(j, IA);
                     } else {
-                        takeCard.playerLoseTakeCard();
+                        takeCard.playerLoseTakeCard(j);
                     }
                     Jeu j4 = (Jeu) j.clone();
                     h.ajouteListDeHistoire(j4);
@@ -302,6 +302,7 @@ public class GameProcessVue {
 
                 break;
         }
+        return j;
     }
 
     public void AIvsAI() {

@@ -153,7 +153,7 @@ public class Serveur {
             case 1:
                 j.playerNow = j.playerFirst;
                 if (j.getPlayerNow() == 0) {
-                    playCards.playerFirstPlayCard();
+                    playCards.playerFirstPlayCard(j);
                     objectOutput.writeObject(j);
                     objectOutput.flush();
                     System.out.println("fa song cheng gong ");
@@ -168,7 +168,7 @@ public class Serveur {
                 j.playerNow = j.playerNow + 1;
                 if (j.playerNow == 2) j.playerNow = 0;
                 if (j.getPlayerNow() == 0) {
-                    playCards.playerSecondePlayCard();
+                    playCards.playerSecondePlayCard(j);
                     objectOutput.writeObject(j);
                     objectOutput.flush();
                     System.out.println("fa song cheng gong ");
@@ -185,7 +185,7 @@ public class Serveur {
                     j.playerNow = j.Playerwin;
                     if (j.playerNow == 2) j.playerNow = 0;
                     if (j.playerNow == 0) {
-                        takeCard.playerWinTakeCard();
+                        takeCard.playerWinTakeCard(j);
                         objectOutput.writeObject(j);
                         objectOutput.flush();
                         System.out.println("fa song cheng gong ");
@@ -205,7 +205,7 @@ public class Serveur {
                     j.playerNow = j.Playerwin + 1;
                     if (j.playerNow == 2) j.playerNow = 0;
                     if (j.playerNow == 0) {
-                        takeCard.playerLoseTakeCard();
+                        takeCard.playerLoseTakeCard(j);
                         objectOutput.writeObject(j);
                         objectOutput.flush();
                         System.out.println("fa song cheng gong ");
