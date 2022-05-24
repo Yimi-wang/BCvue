@@ -60,7 +60,7 @@ public class Main extends JFrame {
 
         // 游戏文本标题
         JLabel jLabel = new JLabel("Bridge Chinois");
-        jLabel.setBounds(20, 15, 300, 30);
+        jLabel.setBounds(30, 25, 300, 30);
         Font f = new Font("隶书",Font.PLAIN,30);
         jLabel.setFont(f);
         Color fg = new Color(255,255,255);
@@ -76,7 +76,7 @@ public class Main extends JFrame {
         ImageIcon startIcon2 = new ImageIcon(startNewimg);
 
         JButton btnStartButton = new JButton(startIcon2);
-        btnStartButton.setBounds(20, 80, 120, 40);
+        btnStartButton.setBounds(30, 90, 120, 40);
         frame.getContentPane().add(btnStartButton);
 
 
@@ -89,7 +89,7 @@ public class Main extends JFrame {
         ImageIcon onlineIcon2 = new ImageIcon(onlineNewImg);
 
         JButton btnOnlineButton = new JButton(onlineIcon2);
-        btnOnlineButton.setBounds(20, 140, 120, 40);
+        btnOnlineButton.setBounds(30, 150, 120, 40);
         frame.getContentPane().add(btnOnlineButton);
 
 
@@ -102,7 +102,7 @@ public class Main extends JFrame {
         ImageIcon loadIcon2 = new ImageIcon(loadNewImg);
 
         JButton btnLoadButton = new JButton(loadIcon2);
-        btnLoadButton.setBounds(20, 200, 120, 40);
+        btnLoadButton.setBounds(30, 210, 120, 40);
         frame.getContentPane().add(btnLoadButton);
 
 
@@ -116,12 +116,8 @@ public class Main extends JFrame {
         ImageIcon settingIcon2 = new ImageIcon(settingNewImg);
 
         JButton btnSettingButton = new JButton(settingIcon2);
-        btnSettingButton.setBounds(20, 260, 120, 40);
+        btnSettingButton.setBounds(30, 270, 120, 40);
         frame.getContentPane().add(btnSettingButton);
-
-
-
-
 
 
 
