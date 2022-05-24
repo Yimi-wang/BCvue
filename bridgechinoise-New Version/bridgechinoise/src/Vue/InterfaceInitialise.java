@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class InterfaceInitialise implements Runnable{
-    public Vue.TitreInterface ti;
+
     public JTextField obText;
     public ArrayList<JRadioButton> obSelection;
     public ButtonGroup obDiffGroup;
@@ -21,7 +21,7 @@ public class InterfaceInitialise implements Runnable{
 
     public JTextField NBText;
     public InterfaceInitialise() {
-        this.ti = new TitreInterface();
+
         aiPlayerSelections = new JRadioButton[2];
         aiDiffGroup = new ButtonGroup();
         this.aiSelections = new ArrayList<JRadioButton>();
@@ -37,6 +37,7 @@ public class InterfaceInitialise implements Runnable{
 
     @Override
     public void run() {
+        //MusicTest.play();
         this.frame = new JFrame("Bridge Chinoise");
         JRadioButton aiOption1 = new JRadioButton("AI Random");
         JRadioButton aiOption2 = new JRadioButton("AI Simple");
@@ -128,15 +129,16 @@ public class InterfaceInitialise implements Runnable{
         //settingBox.add(Box.createHorizontalStrut(10));
         settingBox.add(aiBox);
 
-        frameBox.add(ti);
+
         frameBox.add(settingBox);
 
         frame.add(frameBox);
 
-        frame.setSize(1000, 450);
+        frame.setSize(400, 250);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
     }
 
     public static void start() {

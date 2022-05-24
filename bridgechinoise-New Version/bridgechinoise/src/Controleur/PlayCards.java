@@ -79,8 +79,9 @@ public class PlayCards {
     }
 
     public Jeu IAplaycard(Jeu j, int IA) {
+
         System.out.println("numbre of Rounds est " + j.numberOfRounds);
-        int index = 0;
+        int index = -456;
         j.showCard();
         if (j.playerNow == 0) {
             System.out.println("IA random");
