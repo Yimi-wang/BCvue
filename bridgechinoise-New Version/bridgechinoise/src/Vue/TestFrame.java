@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
+//测试用
 /**
  * Swing中单选钮、下拉框、复选框的使用
  * @author pan_junbiao

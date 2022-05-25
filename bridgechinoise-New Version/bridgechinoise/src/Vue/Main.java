@@ -20,18 +20,34 @@ public class Main extends JFrame implements ActionListener{
 
     JButton landlord[]=new JButton[2];//抢地主按钮
 
-    JButton btnQuestionButton; // ❓按钮
+    //gameMode
+    JButton GameModeQuestionButton; // ❓按钮
 
-    JButton leftButton;//左箭头按钮
+    JButton GameModeLeftButton;//左箭头按钮
 
-    JButton rightButton;//右箭头按钮
+    JButton GameModeRightButton;//右箭头按钮
 
-    JScrollPane inputJSP;//文本输入框，位于下来框下
+    JScrollPane GameModeInputJSP;//文本输入框，位于下来框下
 
     JLabel lblGameMode;//gamemode标签
 
 
-    JComboBox comboBox;//单选框
+    JComboBox GameModeComboBox;//单选框
+
+
+    //AIMode
+    JButton AIModeQuestionButton; // ❓按钮
+
+    JButton AIModeLeftButton;//左箭头按钮
+
+    JButton AIModeRightButton;//右箭头按钮
+
+
+    JLabel lblAIMode;//gamemode标签
+
+
+    JComboBox AIModeComboBox;//单选框
+
 
 
 
@@ -57,7 +73,6 @@ public class Main extends JFrame implements ActionListener{
     public Main() {
         initialize();
         addEventListener();
-        gameModeDisappear();
 
     }
 
@@ -150,21 +165,21 @@ public class Main extends JFrame implements ActionListener{
         lblGameMode.setForeground(fg1);
         mainContentPanel.add(lblGameMode);
 
-        comboBox = new JComboBox();
+        GameModeComboBox = new JComboBox();
         // 绑定下拉框选项
         String[] strArray = { "BO1","BO3","Number of Fixe","Score Fixe"};
         for (String item : strArray)
         {
-            comboBox.addItem(item);
+            GameModeComboBox.addItem(item);
         }
-        comboBox.setFont(new Font("宋体", Font.PLAIN, 14));
-        comboBox.setBounds(150, 140, 180, 30);
-        mainContentPanel.add(comboBox);
+        GameModeComboBox.setFont(new Font("宋体", Font.PLAIN, 14));
+        GameModeComboBox.setBounds(150, 140, 180, 30);
+        mainContentPanel.add(GameModeComboBox);
 
         //添加问号按钮
-        btnQuestionButton = new JButton("❓");
-        btnQuestionButton.setBounds(340, 140, 50, 30);
-        mainContentPanel.add(btnQuestionButton);
+        GameModeQuestionButton = new JButton("❓");
+        GameModeQuestionButton.setBounds(340, 140, 50, 30);
+        mainContentPanel.add(GameModeQuestionButton);
 
 
 
@@ -174,22 +189,58 @@ public class Main extends JFrame implements ActionListener{
         jta.setForeground(Color.BLACK);    //设置组件的背景色
         jta.setFont(new Font("楷体",Font.BOLD,16));    //修改字体样式
         jta.setBackground(Color.white);    //设置按钮背景色
-        inputJSP=new JScrollPane(jta);    //将文本域放入滚动窗口
+        GameModeInputJSP =new JScrollPane(jta);    //将文本域放入滚动窗口
         Dimension size=jta.getPreferredSize();    //获得文本域的首选大小
-        inputJSP.setBounds(150,190,240,size.height);
-        mainContentPanel.add(inputJSP);
+        GameModeInputJSP.setBounds(150,190,240,size.height);
+        mainContentPanel.add(GameModeInputJSP);
 
 
 
         //添加左右按钮
-        leftButton = new JButton("←");
-        leftButton.setBounds(150, 340, 50, 30);
-        mainContentPanel.add(leftButton);
-        rightButton = new JButton("→");
-        rightButton.setBounds(340, 340, 50, 30);
-        mainContentPanel.add(rightButton);
+        GameModeLeftButton = new JButton("←");
+        GameModeLeftButton.setBounds(150, 340, 50, 30);
+        mainContentPanel.add(GameModeLeftButton);
+        GameModeRightButton = new JButton("→");
+        GameModeRightButton.setBounds(340, 340, 50, 30);
+        mainContentPanel.add(GameModeRightButton);
 
 
+
+
+        // 添加AIMode**********************
+        lblAIMode = new JLabel("AIMode");
+        lblAIMode.setBounds(200, 80, 300, 30);
+        Font f2 = new Font("隶书",Font.PLAIN,30);
+        lblAIMode.setFont(f2);
+        Color fg2 = new Color(255,255,255);
+        lblAIMode.setForeground(fg2);
+        mainContentPanel.add(lblAIMode);
+
+        AIModeComboBox = new JComboBox();
+        // 绑定下拉框选项
+        String[] AIStrArray = { "AIrandom","AIsimple","AIminmax","AIrandom"};
+        for (String item : AIStrArray)
+        {
+            AIModeComboBox.addItem(item);
+        }
+        AIModeComboBox.setFont(new Font("宋体", Font.PLAIN, 14));
+        AIModeComboBox.setBounds(150, 140, 180, 30);
+        mainContentPanel.add(AIModeComboBox);
+
+        //添加问号按钮
+        AIModeQuestionButton = new JButton("❓");
+        AIModeQuestionButton.setBounds(340, 140, 50, 30);
+        mainContentPanel.add(AIModeQuestionButton);
+
+
+
+        //添加左右按钮
+        AIModeLeftButton = new JButton("←");
+        AIModeLeftButton.setBounds(180, 240, 50, 30);
+        mainContentPanel.add(AIModeLeftButton);
+        AIModeRightButton = new JButton("→");
+        AIModeRightButton.setBounds(300, 240, 50, 30);
+        mainContentPanel.add(AIModeRightButton);
 
 
         // 设置背景, 背景要在最后面设置
@@ -200,27 +251,53 @@ public class Main extends JFrame implements ActionListener{
         lblBackground.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight()); // 设置组件的显示位置及大小
         mainContentPanel.add(lblBackground); // 将组件添加到面板中
 
+
+        gameModeDisappear();
+        AIModeDisappear();
+
+
+
     }
 
     //gameMode消失
     public void gameModeDisappear(){
         lblGameMode.setVisible(false);
-        comboBox.setVisible(false);
-        btnQuestionButton.setVisible(false);
-        inputJSP.setVisible(false);
-        leftButton.setVisible(false);
-        rightButton.setVisible(false);
+        GameModeComboBox.setVisible(false);
+        GameModeQuestionButton.setVisible(false);
+        GameModeInputJSP.setVisible(false);
+        GameModeLeftButton.setVisible(false);
+        GameModeRightButton.setVisible(false);
     }
 
     //gameMode出现
     public void gameModeAppear(){
         lblGameMode.setVisible(true);
-        comboBox.setVisible(true);
-        btnQuestionButton.setVisible(true);
-        inputJSP.setVisible(true);
-        leftButton.setVisible(true);
-        rightButton.setVisible(true);
+        GameModeComboBox.setVisible(true);
+        GameModeQuestionButton.setVisible(true);
+        GameModeInputJSP.setVisible(true);
+        GameModeLeftButton.setVisible(true);
+        GameModeRightButton.setVisible(true);
     }
+
+
+    public void AIModeDisappear(){
+        lblAIMode.setVisible(false);
+        AIModeComboBox.setVisible(false);
+        AIModeQuestionButton.setVisible(false);
+        AIModeLeftButton.setVisible(false);
+        AIModeRightButton.setVisible(false);
+    }
+    public void AIModeAppear(){
+        lblAIMode.setVisible(true);
+        AIModeComboBox.setVisible(true);
+        AIModeQuestionButton.setVisible(true);
+        AIModeLeftButton.setVisible(true);
+        AIModeRightButton.setVisible(true);
+    }
+
+
+
+
 
     /**
      * 主界面按钮消失
@@ -253,9 +330,14 @@ public class Main extends JFrame implements ActionListener{
         btnSettingButton.addActionListener(this);
 
         //gameMode按钮
-        btnQuestionButton.addActionListener(this);
-        leftButton.addActionListener(this);
-        rightButton.addActionListener(this);
+        GameModeQuestionButton.addActionListener(this);
+        GameModeLeftButton.addActionListener(this);
+        GameModeRightButton.addActionListener(this);
+
+        //AIMode按钮
+        AIModeLeftButton.addActionListener(this);
+        AIModeRightButton.addActionListener(this);
+        AIModeQuestionButton.addActionListener(this);
     }
 
 
@@ -266,13 +348,28 @@ public class Main extends JFrame implements ActionListener{
             mainFrameButtonDisappear();
             gameModeAppear();
         }
-        if(e.getSource()==leftButton){
+        if(e.getSource()== GameModeLeftButton){
             mainFrameButtonAppear();
             gameModeDisappear();
         }
-        if(e.getSource()==btnQuestionButton){
+        if(e.getSource()==GameModeRightButton){
+            AIModeAppear();
+            gameModeDisappear();
+        }
+        if(e.getSource()== GameModeQuestionButton){
             JOptionPane.showMessageDialog(null, "这里给出本游戏模式的疑问解答\r\n如果您有什么不懂的，可以联系我们121212@gmail.com\r\n", "提示", JOptionPane.QUESTION_MESSAGE);
         }
+        if(e.getSource()==AIModeLeftButton){
+            AIModeDisappear();
+            gameModeAppear();
+        }
+        if(e.getSource()==AIModeRightButton){
+
+        }
+        if(e.getSource()==AIModeQuestionButton){
+            JOptionPane.showMessageDialog(null, "这里给出本游戏AI模式的疑问解答\r\n如果您有什么不懂的，可以联系我们121212@gmail.com\r\n", "提示", JOptionPane.QUESTION_MESSAGE);
+        }
+
     }
 
 
