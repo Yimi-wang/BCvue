@@ -29,7 +29,7 @@ public class IArandom {
                 return index;
             }
         }
-        return -1;
+        return -100;
     }
 
     public int IarandomGetCard() {

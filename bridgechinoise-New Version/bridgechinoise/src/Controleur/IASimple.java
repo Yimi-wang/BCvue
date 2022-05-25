@@ -15,6 +15,7 @@ public class IASimple {
     }
 
     public int IASimplePlayerCard() {
+        System.out.println("IASimplePlayCard");
         boolean peutAtout = true;
         if (j.getPlayerfirst() == 1) {//先出的话，出数值最大的牌
             Brand max = j.playercard[1].get(0);
@@ -138,9 +139,10 @@ public class IASimple {
 //        return 0;
 //    }
     public int IASimpleTakeCard() {
+        System.out.println("IASimpleTakeCard");
         //如果游戏有王牌且牌堆有王牌的话
         Brand b = new Brand(Type.pique, 0, 0);
-        int index = -1;
+        int index = -10;
         if (j.avoiratout) {
             for (int i = 0; i <= 5; i++) {
                 if (j.pilescard[i].size() > 0) {

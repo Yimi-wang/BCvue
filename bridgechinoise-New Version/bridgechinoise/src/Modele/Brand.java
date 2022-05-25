@@ -14,7 +14,7 @@ public class Brand implements Cloneable, java.io.Serializable {
         this.type = type;
         this.num = num;
         this.inttype = inttype;
-        this.id=num*(inttype+1);
+        this.id=inttype*13+num;
     }
 
     public Type getType() {

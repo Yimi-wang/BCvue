@@ -15,6 +15,7 @@ public class IconOnButton {
     //获取按钮方法
     public void getButtonss(){
         JFrame frame=new JFrame();
+        //这里是不是该用来自内容根的路径比较好？
         String path="D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\start.png";
         ImageIcon icon1=new ImageIcon(path);
         Image img = icon1.getImage();

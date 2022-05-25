@@ -19,7 +19,7 @@ public class TakeCard {
     }
 
 
-    public void playerWinTakeCard(Jeu j) {
+    public Jeu playerWinTakeCard(Jeu j) {
         //赢家拿牌
         System.out.println("Maintenant c'est le tour de Jouer" + (j.Playerwin + 1));
         System.out.println(("Donned le index que vous voulez prendre"));
@@ -29,7 +29,7 @@ public class TakeCard {
         //回退历史记录
         if (index == -1) {
             h.returnHistoire();
-            return;
+            return j;
         }
         //如果输入有误，重新输入
         while (j.pilescard[index].size() == 0) {
@@ -43,10 +43,10 @@ public class TakeCard {
         j.playercard[j.Playerwin].add(card);
         j.TurnProcess++;
         j.showCard();
-
+        return j;
     }
 
-    public void playerLoseTakeCard(Jeu j) {
+    public Jeu playerLoseTakeCard(Jeu j) {
         int a = j.Playerwin + 1;
         if (a == 2) a = 0;
         System.out.println("Maintenant c'est le tour de Jouer" + (a + 1));
@@ -57,7 +57,7 @@ public class TakeCard {
         //回退历史记录
         if (index == -1) {
             h.returnHistoire();
-            return;
+            return j;
         }
         //如果输入有误，重新输入
         while (j.pilescard[index].size() == 0) {
@@ -77,17 +77,17 @@ public class TakeCard {
         }
 //        Jeu j4 = (Jeu) j.clone();
 //        h.ajouteListDeHistoire(j4);
-
+        return j;
     }
 
-    public void IAtakecard(Jeu j, int IA) {
+    public Jeu IAtakecard(Jeu j, int IA) {
         //System.out.println("numbre of Rounds est "+j.numberOfRounds);
         if (j.playerNow == 0) {
             System.out.println("IA random");
         } else {
             System.out.println("IA simple");
         }
-        int index = -1;
+        int index=-123;
         switch (IA) {
             case 1:
                 IArandom iar = new IArandom(j);
@@ -113,6 +113,7 @@ public class TakeCard {
             j.numberOfRounds++;
         }
         j.showCard();
+        return j;
     }
 
 }

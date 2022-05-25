@@ -4,8 +4,7 @@ import Controleur.PlayCards;
 import Controleur.SaveLoad;
 import Controleur.TakeCard;
 import Web.GameStartInternet;
-
-import java.io.IOException;
+import global.Configuration;
 
 import static java.lang.System.exit;
 
@@ -19,18 +18,35 @@ public class GameProcessVue {
     PlayCards playCards;
     TakeCard takeCard;
     GameStartInternet GSI = new GameStartInternet();
+
     public GameProcessVue() {
     }
 
-    public void creatJeu(Jeu j) throws IOException, ClassNotFoundException {
+    public Jeu creatJeu() {
         player1 = 0;
         player2 = 0;
+        j = new Jeu();
         a = new Atout(j);
         h = new Histoire(j);
+        String GameMode = Configuration.instance().lis("GameMode");
+        int GameModei = Integer.parseInt(GameMode);
+        if (GameModei > 2) {
+            String GameInformation = Configuration.instance().lis("GameInformation");
+            int GameInformationi = Integer.parseInt(GameInformation);
+            j.GameInformation = GameInformationi;
+        }
+
+        String AI = Configuration.instance().lis("AI");
+        int AIi = Integer.parseInt(AI);
+        j.AI = AIi;
+        j.GameMode = GameModei;
 
         j.playerFirst = 2;
-        this.IA = j.AI;
-        gameMode(j);
+        IA = j.AI;
+        StartHand startHand = new StartHand(j);
+        startHand.stardHand();
+        //gameMode(j);
+        return j;
     }
 
     public void gameStart(Jeu j, Histoire h) {
@@ -40,8 +56,10 @@ public class GameProcessVue {
             j.playerFirst = (j.numberOfGames - 1) % 2;
             j.numberOfRounds = 1;
             //进行发牌以及牌堆的实现
-            StartHand startHand = new StartHand(j);
-            startHand.stardHand();
+            if (j.numberOfGames != 1) {
+                StartHand startHand = new StartHand(j);
+                startHand.stardHand();
+            }
             a.determinerAtout();
             Jeu j0 = (Jeu) j.clone();
             h.ajouteListDeHistoire(j0);
@@ -53,17 +71,18 @@ public class GameProcessVue {
 
     public void gameMode(Jeu j) {
         SaveLoad sl = new SaveLoad();
-        int gamemode= j.GameMode;
-        int  nGame=j.GameInformation;
-        if(j.AI==4) gameAI();
+        int gamemode = j.GameMode;
+        int nGame = j.GameInformation;
+        if (j.AI == 4) gameAI(j);
         switch (gamemode) {
             case 1:
-                gameStart(j,h);
+                gameStart(j, h);
+
                 //进行26轮游戏（因为一共52张牌）
                 while (j.numberOfRounds != 26) {
                     if (j.TurnProcess == 5)
                         j.TurnProcess = 1;
-                    turnstart(h);
+                    j = turnstart(h);
                 }
                 //游戏结束，判断胜负手
                 if (j.Player1Score > j.Player2Score) {
@@ -75,12 +94,13 @@ public class GameProcessVue {
             case 2:
                 for (int i = 0; i < 3; i++) {
                     j.Game_ind = i;
-                    gameStart(j,h);
+                    gameStart(j, h);
+
                     while (j.numberOfRounds != 26) {
                         if (j.TurnProcess == 5) {
                             j.TurnProcess = 1;
                         }
-                        turnstart(h);
+                        j = turnstart(h);
                     }
                 }
                 //游戏结束，判断胜负手
@@ -101,12 +121,12 @@ public class GameProcessVue {
             case 3:
                 System.out.println(nGame);
                 for (int i = 0; i < nGame; i++) {
-                    j.Game_ind=i;
-                    gameStart(j,h);
+                    j.Game_ind = i;
+                    gameStart(j, h);
                     while (j.numberOfRounds != 26) {
                         if (j.TurnProcess == 5)
                             j.TurnProcess = 1;
-                        turnstart(h);
+                        j = turnstart(h);
                     }
                 }
                 if (j.Player1totalScore > j.Player2totalScore) {
@@ -117,16 +137,16 @@ public class GameProcessVue {
                 h.cleanHistoire();
                 break;
             case 4:
-                int ScoreWin=j.GameInformation;
+                int ScoreWin = j.GameInformation;
                 System.out.println(ScoreWin);
                 System.out.println(j.Player1totalScore);
                 while (j.Player1totalScore < ScoreWin && j.Player2totalScore < ScoreWin) {
                     System.out.println(j.Player1totalScore);
-                    gameStart(j,h);
+                    gameStart(j, h);
                     while (j.numberOfRounds != 26) {
                         if (j.TurnProcess == 5)
                             j.TurnProcess = 1;
-                        this.j=turnstart(h);
+                        j = turnstart(h);
                         System.out.println(j.Player1totalScore);
                         if (j.Player1totalScore >= ScoreWin || j.Player2totalScore >= ScoreWin) {
                             if (j.Player1totalScore > j.Player2totalScore) {
@@ -147,19 +167,19 @@ public class GameProcessVue {
 
     }
 
-    public void gameAI() {
-        int gamemode= j.GameMode;
-        int  nGame=j.GameInformation;
-        int ScoreWin=j.GameInformation;
+    public void gameAI(Jeu j) {
+        int gamemode = j.GameMode;
+        int nGame = j.GameInformation;
+        int ScoreWin = j.GameInformation;
         switch (gamemode) {
             case 1:
                 System.out.println("c'est mode 1");
-                gameStart(j,h);
+                gameStart(j, h);
                 //进行26轮游戏（因为一共52张牌）
                 while (j.numberOfRounds != 26) {
                     if (j.TurnProcess == 5)
                         j.TurnProcess = 1;
-                    AIvsAI();
+                    j = AIvsAI();
                 }
                 //游戏结束，判断胜负手
                 if (j.Player1Score > j.Player2Score) {
@@ -171,12 +191,12 @@ public class GameProcessVue {
             case 2:
                 System.out.println("c'est mode 2");
                 for (int i = 0; i < 3; i++) {
-                    gameStart(j,h);
+                    gameStart(j, h);
                     while (j.numberOfRounds != 27) {
                         if (j.TurnProcess == 5) {
                             j.TurnProcess = 1;
                         }
-                        AIvsAI();
+                        j = AIvsAI();
                     }
                     //游戏结束，判断胜负手
                     if (j.Player1Score > j.Player2Score) {
@@ -196,11 +216,11 @@ public class GameProcessVue {
             case 3:
                 System.out.println("c'est mode 3");
                 for (int i = 0; i < nGame; i++) {
-                    gameStart(j,h);
+                    gameStart(j, h);
                     while (j.numberOfRounds != 27) {
                         if (j.TurnProcess == 5)
                             j.TurnProcess = 1;
-                        AIvsAI();
+                        j = AIvsAI();
                     }
                     System.out.println("player 1 total score est " + j.Player1totalScore);
                     System.out.println("player 2 total score est " + j.Player2totalScore);
@@ -216,11 +236,11 @@ public class GameProcessVue {
             case 4:
                 System.out.println("c'est mode 4");
                 while (j.Player1totalScore < ScoreWin && j.Player2totalScore < ScoreWin) {
-                    gameStart(j,h);
+                    gameStart(j, h);
                     while (j.numberOfRounds != 26) {
                         if (j.TurnProcess == 5)
                             j.TurnProcess = 1;
-                        AIvsAI();
+                        j = AIvsAI();
                         if (j.Player1totalScore >= ScoreWin || j.Player2totalScore >= ScoreWin) {
                             if (j.Player1totalScore > j.Player2totalScore) {
                                 System.out.println("Player 1 win!");
@@ -248,9 +268,9 @@ public class GameProcessVue {
             case 1:
                 j.playerNow = j.playerFirst;
                 if (IA > 0 && j.getPlayerNow() == 1) {
-                    this.j=playCards.IAplaycard(j, IA);
+                    playCards.IAplaycard(j, IA);
                 } else {
-                    this.j=playCards.playerFirstPlayCard(j);
+                    playCards.playerFirstPlayCard(j);
                 }
                 Jeu j1 = (Jeu) j.clone();
                 h.ajouteListDeHistoire(j1);
@@ -260,9 +280,9 @@ public class GameProcessVue {
                 j.playerNow = j.playerNow + 1;
                 if (j.playerNow == 2) j.playerNow = 0;
                 if (IA > 0 && j.getPlayerNow() == 1) {
-                    this.j=playCards.IAplaycard(j, IA);
+                    playCards.IAplaycard(j, IA);
                 } else {
-                    this.j=playCards.playerSecondePlayCard(j);
+                    playCards.playerSecondePlayCard(j);
                 }
                 Jeu j2 = (Jeu) j.clone();
                 h.ajouteListDeHistoire(j2);
@@ -305,7 +325,7 @@ public class GameProcessVue {
         return j;
     }
 
-    public void AIvsAI() {
+    public Jeu AIvsAI() {
         j = h.listDeHistoire.get(h.listDeHistoire.size() - 1);
         playCards = new PlayCards(j, h);
         takeCard = new TakeCard(j, h);
@@ -314,19 +334,24 @@ public class GameProcessVue {
             case 1:
                 j.playerNow = j.playerFirst;
                 if (j.getPlayerNow() == 1) {
-                    playCards. IAplaycard(j, IA);
+                    j = playCards.IAplaycard(j, 2);
                 } else {
-                    playCards.IAplaycard(j, 3);
+                    j = playCards.IAplaycard(j, 3);
                 }
+
+                //告诉vue，重新读取jeu的数据
+                //vue.reload(Jeu j);
+
+
                 break;
             //后手方出牌
             case 2:
                 j.playerNow = j.playerNow + 1;
                 if (j.playerNow == 2) j.playerNow = 0;
                 if (IA > 0 && j.getPlayerNow() == 1) {
-                    playCards.IAplaycard(j, IA);
+                    j = playCards.IAplaycard(j, 2);
                 } else {
-                    playCards.IAplaycard(j, 3);
+                    j = playCards.IAplaycard(j, 3);
                 }
                 break;
             //根据赢家，进行拿牌操作。
@@ -335,9 +360,9 @@ public class GameProcessVue {
                 if (j.numberOfRounds <= 15) {
                     j.playerNow = j.Playerwin;
                     if (IA > 0 && j.playerNow == 1) {
-                        takeCard.IAtakecard(j, IA);
+                        j = takeCard.IAtakecard(j, 2);
                     } else {
-                        takeCard.IAtakecard(j, 3);
+                        j = takeCard.IAtakecard(j, 3);
                     }
 
                 } else {
@@ -349,14 +374,15 @@ public class GameProcessVue {
                     j.playerNow = j.Playerwin + 1;
                     if (j.playerNow == 2) j.playerNow = 0;
                     if (IA > 0 && j.playerNow == 1) {
-                        takeCard.IAtakecard(j, IA);
+                        j = takeCard.IAtakecard(j, 2);
                     } else {
-                        takeCard.IAtakecard(j, 3);
+                        j = takeCard.IAtakecard(j, 3);
                     }
                 } else {
                     j.TurnProcess++;
                 }
                 break;
         }
+        return j;
     }
 }
