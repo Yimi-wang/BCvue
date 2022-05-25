@@ -1,6 +1,7 @@
 package Vue;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.net.URL;
 
@@ -75,8 +76,12 @@ public class Main extends JFrame {
         Image startNewimg = startImg.getScaledInstance(120,40,java.awt.Image.SCALE_SMOOTH);
         ImageIcon startIcon2 = new ImageIcon(startNewimg);
 
-        JButton btnStartButton = new JButton(startIcon2);
+        RoundRectButton btnStartButton = new RoundRectButton(startIcon2);
         btnStartButton.setBounds(30, 90, 120, 40);
+        btnStartButton.setBorder(new RoundBorder(Color.WHITE));
+        btnStartButton.setBackground(Color.RED);
+
+
         frame.getContentPane().add(btnStartButton);
 
 
@@ -88,7 +93,7 @@ public class Main extends JFrame {
         Image onlineNewImg = onlineImg.getScaledInstance(120,40,java.awt.Image.SCALE_SMOOTH);
         ImageIcon onlineIcon2 = new ImageIcon(onlineNewImg);
 
-        JButton btnOnlineButton = new JButton(onlineIcon2);
+        RoundRectButton btnOnlineButton = new RoundRectButton(onlineIcon2);
         btnOnlineButton.setBounds(30, 150, 120, 40);
         frame.getContentPane().add(btnOnlineButton);
 
@@ -101,7 +106,7 @@ public class Main extends JFrame {
         Image loadNewImg = loadImg.getScaledInstance(120,40,java.awt.Image.SCALE_SMOOTH);
         ImageIcon loadIcon2 = new ImageIcon(loadNewImg);
 
-        JButton btnLoadButton = new JButton(loadIcon2);
+        RoundRectButton btnLoadButton = new RoundRectButton(loadIcon2);
         btnLoadButton.setBounds(30, 210, 120, 40);
         frame.getContentPane().add(btnLoadButton);
 
@@ -115,7 +120,7 @@ public class Main extends JFrame {
         Image settingNewImg = settingImg.getScaledInstance(120,40,java.awt.Image.SCALE_SMOOTH);
         ImageIcon settingIcon2 = new ImageIcon(settingNewImg);
 
-        JButton btnSettingButton = new JButton(settingIcon2);
+        RoundRectButton btnSettingButton = new RoundRectButton(settingIcon2);
         btnSettingButton.setBounds(30, 270, 120, 40);
         frame.getContentPane().add(btnSettingButton);
 
@@ -130,3 +135,5 @@ public class Main extends JFrame {
         frame.getContentPane().add(lblBackground); // 将组件添加到面板中
     }
 }
+
+
