@@ -5,66 +5,74 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Main extends JFrame implements ActionListener{
-
     JFrame mainframe;
+
+    JFrame gameframe;
 
     Container mainContentPanel;
 
-    JPanel gameModePanel;
+    Container gameContentPanel;
+
     JButton btnStartButton;
     JButton btnLoadButton;
     JButton btnSettingButton;
     JButton btnOnlineButton;
 
-    JButton landlord[]=new JButton[2];//æŠ¢åœ°ä¸»æŒ‰é’®
-
     //gameMode
-    JButton GameModeQuestionButton; // â“æŒ‰é’®
-
-    JButton GameModeLeftButton;//å·¦ç®­å¤´æŒ‰é’®
-
-    JButton GameModeRightButton;//å³ç®­å¤´æŒ‰é’®
-
-    JScrollPane GameModeInputJSP;//æ–‡æœ¬è¾“å…¥æ¡†ï¼Œä½äºä¸‹æ¥æ¡†ä¸‹
-
-    JLabel lblGameMode;//gamemodeæ ‡ç­¾
-
-
-    JComboBox GameModeComboBox;//å•é€‰æ¡†
+    JButton GameModeQuestionButton; // ?°´Å¥
+    JButton GameModeLeftButton;//×ó¼ıÍ·°´Å¥
+    JButton GameModeRightButton;//ÓÒ¼ıÍ·°´Å¥
+    JScrollPane GameModeInputJSP;//ÎÄ±¾ÊäÈë¿ò£¬Î»ÓÚÏÂÀ´¿òÏÂ
+    JLabel lblGameMode;//gamemode±êÇ©
+    JComboBox GameModeComboBox;//µ¥Ñ¡¿ò
 
 
     //AIMode
-    JButton AIModeQuestionButton; // â“æŒ‰é’®
-
-    JButton AIModeLeftButton;//å·¦ç®­å¤´æŒ‰é’®
-
-    JButton AIModeRightButton;//å³ç®­å¤´æŒ‰é’®
-
-
-    JLabel lblAIMode;//gamemodeæ ‡ç­¾
+    JButton AIModeQuestionButton; // ?°´Å¥
+    JButton AIModeLeftButton;//×ó¼ıÍ·°´Å¥
+    JButton AIModeRightButton;//ÓÒ¼ıÍ·°´Å¥
+    JLabel lblAIMode;//gamemode±êÇ©
+    JComboBox AIModeComboBox;//µ¥Ñ¡¿ò
 
 
-    JComboBox AIModeComboBox;//å•é€‰æ¡†
+    //ÅÆ
+    // Íæ¼ÒÊÖÉÏµÄÅÆ
+    List<Card> playerCards;
 
+    //¶ÔÊÖÊÖÉÏµÄÅÆ
+    List<Card> fighterCards;
 
+    Card card[]=new Card[53];
+
+    JTextField time[] = new JTextField[3]; //¼ÆÊ±Æ÷
+
+    boolean nextPlayer = false;
 
 
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Main window = new Main();
-                    window.mainframe.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    Main window = new Main();
+//                    window.mainframe.setVisible(true);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+        Main window = new Main();
+        window.mainframe.setVisible(true);
+//        window.gameframe.setVisible(true);
     }
 
     /**
@@ -72,6 +80,7 @@ public class Main extends JFrame implements ActionListener{
      */
     public Main() {
         initialize();
+        initGame();
         addEventListener();
 
     }
@@ -80,7 +89,7 @@ public class Main extends JFrame implements ActionListener{
      * Initialize the contents of the frame.
      */
     private void initialize() {
-        // åˆå§‹åŒ–çª—ä½“
+        // ³õÊ¼»¯´°Ìå
         mainframe = new JFrame("Bcvue game");
         mainframe.setBounds(300, 300, 720, 506);
         mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,17 +100,17 @@ public class Main extends JFrame implements ActionListener{
 //        gameModePanel.setBounds(120, 120, 200, 200);
 //        gameModePanel.setLayout(null);
 
-        // æ¸¸æˆæ–‡æœ¬æ ‡é¢˜
+        // ÓÎÏ·ÎÄ±¾±êÌâ
         JLabel jLabel = new JLabel("Bridge Chinois");
         jLabel.setBounds(30, 25, 300, 30);
-        Font f = new Font("éš¶ä¹¦",Font.PLAIN,30);
+        Font f = new Font("Á¥Êé",Font.PLAIN,30);
         jLabel.setFont(f);
         Color fg = new Color(255,255,255);
         jLabel.setForeground(fg);
         mainContentPanel.add(jLabel);
 
-        // startæŒ‰é’®
-        //åŠ è½½èƒŒæ™¯å›¾ç‰‡
+        // start°´Å¥
+        //¼ÓÔØ±³¾°Í¼Æ¬
         String startPath="D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\start.png";
         ImageIcon startIcon1=new ImageIcon(startPath);
         Image startImg = startIcon1.getImage();
@@ -115,7 +124,7 @@ public class Main extends JFrame implements ActionListener{
 
 
         // online
-        //åŠ è½½èƒŒæ™¯å›¾ç‰‡
+        //¼ÓÔØ±³¾°Í¼Æ¬
         String onlinePath="D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\online.png";
         ImageIcon onlineIcon1=new ImageIcon(onlinePath);
         Image onlineImg = onlineIcon1.getImage();
@@ -128,7 +137,7 @@ public class Main extends JFrame implements ActionListener{
 
 
         // load
-        //åŠ è½½èƒŒæ™¯å›¾ç‰‡
+        //¼ÓÔØ±³¾°Í¼Æ¬
         String loadPath="D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\load.png";
         ImageIcon loadIcon1=new ImageIcon(loadPath);
         Image loadImg = loadIcon1.getImage();
@@ -141,7 +150,7 @@ public class Main extends JFrame implements ActionListener{
 
 
         // load
-        //åŠ è½½èƒŒæ™¯å›¾ç‰‡
+        //¼ÓÔØ±³¾°Í¼Æ¬
         String settingPath="D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\setting.png";
         ImageIcon settingIcon1=new ImageIcon(settingPath);
         Image settingImg = settingIcon1.getImage();
@@ -152,114 +161,200 @@ public class Main extends JFrame implements ActionListener{
         btnSettingButton.setBounds(30, 270, 120, 40);
         mainContentPanel.add(btnSettingButton);
 
-//        //æ·»åŠ gameMode
+//        //Ìí¼ÓgameMode
 //        JLabel gameModeText = new JLabel("GameMode");
 //        gameModePanel.add(gameModeText);
 //        mainContentPanel.add(gameModePanel);
 
         lblGameMode = new JLabel("GameMode");
         lblGameMode.setBounds(200, 80, 300, 30);
-        Font f1 = new Font("éš¶ä¹¦",Font.PLAIN,30);
+        Font f1 = new Font("Á¥Êé",Font.PLAIN,30);
         lblGameMode.setFont(f1);
         Color fg1 = new Color(255,255,255);
         lblGameMode.setForeground(fg1);
         mainContentPanel.add(lblGameMode);
 
         GameModeComboBox = new JComboBox();
-        // ç»‘å®šä¸‹æ‹‰æ¡†é€‰é¡¹
+        // °ó¶¨ÏÂÀ­¿òÑ¡Ïî
         String[] strArray = { "BO1","BO3","Number of Fixe","Score Fixe"};
         for (String item : strArray)
         {
             GameModeComboBox.addItem(item);
         }
-        GameModeComboBox.setFont(new Font("å®‹ä½“", Font.PLAIN, 14));
+        GameModeComboBox.setFont(new Font("ËÎÌå", Font.PLAIN, 14));
         GameModeComboBox.setBounds(150, 140, 180, 30);
         mainContentPanel.add(GameModeComboBox);
 
-        //æ·»åŠ é—®å·æŒ‰é’®
-        GameModeQuestionButton = new JButton("â“");
+        //Ìí¼ÓÎÊºÅ°´Å¥
+        GameModeQuestionButton = new JButton("?");
         GameModeQuestionButton.setBounds(340, 140, 50, 30);
         mainContentPanel.add(GameModeQuestionButton);
 
 
 
-        // æ·»åŠ æ–‡æœ¬æ¡†
+        // Ìí¼ÓÎÄ±¾¿ò
         JTextArea jta=new JTextArea("",7,30);
-        jta.setLineWrap(true);    //è®¾ç½®æ–‡æœ¬åŸŸä¸­çš„æ–‡æœ¬ä¸ºè‡ªåŠ¨æ¢è¡Œ
-        jta.setForeground(Color.BLACK);    //è®¾ç½®ç»„ä»¶çš„èƒŒæ™¯è‰²
-        jta.setFont(new Font("æ¥·ä½“",Font.BOLD,16));    //ä¿®æ”¹å­—ä½“æ ·å¼
-        jta.setBackground(Color.white);    //è®¾ç½®æŒ‰é’®èƒŒæ™¯è‰²
-        GameModeInputJSP =new JScrollPane(jta);    //å°†æ–‡æœ¬åŸŸæ”¾å…¥æ»šåŠ¨çª—å£
-        Dimension size=jta.getPreferredSize();    //è·å¾—æ–‡æœ¬åŸŸçš„é¦–é€‰å¤§å°
+        jta.setLineWrap(true);    //ÉèÖÃÎÄ±¾ÓòÖĞµÄÎÄ±¾Îª×Ô¶¯»»ĞĞ
+        jta.setForeground(Color.BLACK);    //ÉèÖÃ×é¼şµÄ±³¾°É«
+        jta.setFont(new Font("¿¬Ìå",Font.BOLD,16));    //ĞŞ¸Ä×ÖÌåÑùÊ½
+        jta.setBackground(Color.white);    //ÉèÖÃ°´Å¥±³¾°É«
+        GameModeInputJSP =new JScrollPane(jta);    //½«ÎÄ±¾Óò·ÅÈë¹ö¶¯´°¿Ú
+        Dimension size=jta.getPreferredSize();    //»ñµÃÎÄ±¾ÓòµÄÊ×Ñ¡´óĞ¡
         GameModeInputJSP.setBounds(150,190,240,size.height);
         mainContentPanel.add(GameModeInputJSP);
 
 
-
-        //æ·»åŠ å·¦å³æŒ‰é’®
-        GameModeLeftButton = new JButton("â†");
+        //Ìí¼Ó×óÓÒ°´Å¥
+        GameModeLeftButton = new JButton("¡û");
         GameModeLeftButton.setBounds(150, 340, 50, 30);
         mainContentPanel.add(GameModeLeftButton);
-        GameModeRightButton = new JButton("â†’");
+        GameModeRightButton = new JButton("¡ú");
         GameModeRightButton.setBounds(340, 340, 50, 30);
         mainContentPanel.add(GameModeRightButton);
 
 
-
-
-        // æ·»åŠ AIMode**********************
+        // Ìí¼ÓAIMode**********************
         lblAIMode = new JLabel("AIMode");
         lblAIMode.setBounds(200, 80, 300, 30);
-        Font f2 = new Font("éš¶ä¹¦",Font.PLAIN,30);
+        Font f2 = new Font("Á¥Êé",Font.PLAIN,30);
         lblAIMode.setFont(f2);
         Color fg2 = new Color(255,255,255);
         lblAIMode.setForeground(fg2);
         mainContentPanel.add(lblAIMode);
 
         AIModeComboBox = new JComboBox();
-        // ç»‘å®šä¸‹æ‹‰æ¡†é€‰é¡¹
+        // °ó¶¨ÏÂÀ­¿òÑ¡Ïî
         String[] AIStrArray = { "AIrandom","AIsimple","AIminmax","AIrandom"};
         for (String item : AIStrArray)
         {
             AIModeComboBox.addItem(item);
         }
-        AIModeComboBox.setFont(new Font("å®‹ä½“", Font.PLAIN, 14));
+        AIModeComboBox.setFont(new Font("ËÎÌå", Font.PLAIN, 14));
         AIModeComboBox.setBounds(150, 140, 180, 30);
         mainContentPanel.add(AIModeComboBox);
 
-        //æ·»åŠ é—®å·æŒ‰é’®
-        AIModeQuestionButton = new JButton("â“");
+        //Ìí¼ÓÎÊºÅ°´Å¥
+        AIModeQuestionButton = new JButton("?");
         AIModeQuestionButton.setBounds(340, 140, 50, 30);
         mainContentPanel.add(AIModeQuestionButton);
 
 
 
-        //æ·»åŠ å·¦å³æŒ‰é’®
-        AIModeLeftButton = new JButton("â†");
+        //Ìí¼Ó×óÓÒ°´Å¥
+        AIModeLeftButton = new JButton("¡û");
         AIModeLeftButton.setBounds(180, 240, 50, 30);
         mainContentPanel.add(AIModeLeftButton);
-        AIModeRightButton = new JButton("â†’");
+        AIModeRightButton = new JButton("¡ú");
         AIModeRightButton.setBounds(300, 240, 50, 30);
         mainContentPanel.add(AIModeRightButton);
 
 
-        // è®¾ç½®èƒŒæ™¯, èƒŒæ™¯è¦åœ¨æœ€åé¢è®¾ç½®
-        JLabel lblBackground = new JLabel(); // åˆ›å»ºä¸€ä¸ªæ ‡ç­¾ç»„ä»¶å¯¹è±¡
-        URL resource = this.getClass().getResource("../images/MainMenu.png"); // è·å–èƒŒæ™¯å›¾ç‰‡è·¯å¾„
-        ImageIcon icon = new ImageIcon(resource); // åˆ›å»ºèƒŒæ™¯å›¾ç‰‡å¯¹è±¡
-        lblBackground.setIcon(icon); // è®¾ç½®æ ‡ç­¾ç»„ä»¶è¦æ˜¾ç¤ºçš„å›¾æ ‡
-        lblBackground.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight()); // è®¾ç½®ç»„ä»¶çš„æ˜¾ç¤ºä½ç½®åŠå¤§å°
-        mainContentPanel.add(lblBackground); // å°†ç»„ä»¶æ·»åŠ åˆ°é¢æ¿ä¸­
+        // ÉèÖÃ±³¾°, ±³¾°ÒªÔÚ×îºóÃæÉèÖÃ
+        JLabel lblBackground = new JLabel(); // ´´½¨Ò»¸ö±êÇ©×é¼ş¶ÔÏó
+        URL resource = this.getClass().getResource("../images/MainMenu.png"); // »ñÈ¡±³¾°Í¼Æ¬Â·¾¶
+        ImageIcon icon = new ImageIcon(resource); // ´´½¨±³¾°Í¼Æ¬¶ÔÏó
+        lblBackground.setIcon(icon); // ÉèÖÃ±êÇ©×é¼şÒªÏÔÊ¾µÄÍ¼±ê
+        lblBackground.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight()); // ÉèÖÃ×é¼şµÄÏÔÊ¾Î»ÖÃ¼°´óĞ¡
+        mainContentPanel.add(lblBackground); // ½«×é¼şÌí¼Óµ½Ãæ°åÖĞ
 
 
         gameModeDisappear();
         AIModeDisappear();
 
+    }
+
+
+
+    private void initGame(){
+        initializeGameFrame();
+
+        CardInit();
+
+    }
+
+    public void initializeGameFrame(){
+
+
+
+        gameframe = new JFrame("Bcvue game");
+        gameframe.setSize(830,620);
+        gameframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        gameframe.setResizable(false);
+        gameframe.setLocationRelativeTo(getOwner()); // ÆÁÄ»¾ÓÖĞ
+        gameContentPanel = gameframe.getContentPane();
+        gameContentPanel.setLayout(null);
+        JButton jButton = new JButton("test");
+        jButton.setBounds(10,10,100,30);
+        jButton.setFont(new Font("ËÎÌå", Font.PLAIN, 14));
+        gameContentPanel.add(jButton);
+
+        gameContentPanel.setBackground(new Color(46,139,87)); //ÉèÖÃ±³¾°ÑÕÉ«
+
+
 
 
     }
 
-    //gameModeæ¶ˆå¤±
+
+    private void CardInit(){
+        int count =1 ;
+//
+//        Card card1 = new Card( "1-1", false);
+//        card1.setBounds(100,100,70,100);
+//        gameContentPanel.add(card1);
+
+        //³õÊ¼»¯ÅÆ
+        for (int i = 1; i <= 5; i++) {
+            for (int j = 1; j <= 13; j++) {
+                if (i == 5)
+                    break;
+                else {
+                    card[count] = new Card( i + "-" + j, false);
+                    card[count].setLocation(350, 200);
+                    gameContentPanel.add(card[count]);
+                    count++;
+                }
+            }
+        }
+
+        //´òÂÒË³Ğò
+        for(int i=0;i<100;i++){
+            Random random=new Random();
+            int a=random.nextInt(52)+1;
+            int b=random.nextInt(52)+1;
+            Card k=card[a];
+            card[a]=card[b];
+            card[b]=k;
+        }
+
+        //¿ªÊ¼·¢ÅÆ
+        //³õÊ¼»¯ÎÒµÄÅÆÁĞ±íÓë¶ÔÊÖÅÆÁĞ±í
+        fighterCards = new ArrayList<>();
+        playerCards = new ArrayList<>();
+        //ÏÈ·¢Á½¸öÈËµÄÅÆ
+        boolean b=false;
+        for(int i=1;i<=22;i++){
+            if(b){
+                Common.move(card[i],card[i].getLocation(), new Point(180+i*20,450));
+                card[i].canClick=true;
+                playerCards.add(card[i]);
+                card[i].turnFront();
+                b = false;
+            }else{
+                Common.move(card[i],card[i].getLocation(), new Point(180+i*20,50));
+                card[i].canClick=true;
+                fighterCards.add(card[i]);
+                card[i].turnBack();
+                b = true;
+            }
+
+        }
+
+
+    }
+
+
+    //gameModeÏûÊ§
     public void gameModeDisappear(){
         lblGameMode.setVisible(false);
         GameModeComboBox.setVisible(false);
@@ -269,7 +364,7 @@ public class Main extends JFrame implements ActionListener{
         GameModeRightButton.setVisible(false);
     }
 
-    //gameModeå‡ºç°
+    //gameMode³öÏÖ
     public void gameModeAppear(){
         lblGameMode.setVisible(true);
         GameModeComboBox.setVisible(true);
@@ -297,10 +392,8 @@ public class Main extends JFrame implements ActionListener{
 
 
 
-
-
     /**
-     * ä¸»ç•Œé¢æŒ‰é’®æ¶ˆå¤±
+     * Ö÷½çÃæ°´Å¥ÏûÊ§
      */
     public void mainFrameButtonDisappear(){
         btnStartButton.setVisible(false);
@@ -311,7 +404,7 @@ public class Main extends JFrame implements ActionListener{
 
 
     /**
-     * ä¸»ç•Œé¢æŒ‰é’®å‡ºç°
+     * Ö÷½çÃæ°´Å¥³öÏÖ
      */
     public void mainFrameButtonAppear(){
         btnStartButton.setVisible(true);
@@ -323,18 +416,18 @@ public class Main extends JFrame implements ActionListener{
 
     public void addEventListener() {
 
-        //ä¸»ç•Œé¢æŒ‰é’®
+        //Ö÷½çÃæ°´Å¥
         btnStartButton.addActionListener(this);
         btnLoadButton.addActionListener(this);
         btnOnlineButton.addActionListener(this);
         btnSettingButton.addActionListener(this);
 
-        //gameModeæŒ‰é’®
+        //gameMode°´Å¥
         GameModeQuestionButton.addActionListener(this);
         GameModeLeftButton.addActionListener(this);
         GameModeRightButton.addActionListener(this);
 
-        //AIModeæŒ‰é’®
+        //AIMode°´Å¥
         AIModeLeftButton.addActionListener(this);
         AIModeRightButton.addActionListener(this);
         AIModeQuestionButton.addActionListener(this);
@@ -357,22 +450,20 @@ public class Main extends JFrame implements ActionListener{
             gameModeDisappear();
         }
         if(e.getSource()== GameModeQuestionButton){
-            JOptionPane.showMessageDialog(null, "è¿™é‡Œç»™å‡ºæœ¬æ¸¸æˆæ¨¡å¼çš„ç–‘é—®è§£ç­”\r\nå¦‚æœæ‚¨æœ‰ä»€ä¹ˆä¸æ‡‚çš„ï¼Œå¯ä»¥è”ç³»æˆ‘ä»¬121212@gmail.com\r\n", "æç¤º", JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ÕâÀï¸ø³ö±¾ÓÎÏ·Ä£Ê½µÄÒÉÎÊ½â´ğ\r\nÈç¹ûÄúÓĞÊ²Ã´²»¶®µÄ£¬¿ÉÒÔÁªÏµÎÒÃÇ121212@gmail.com\r\n", "ÌáÊ¾", JOptionPane.QUESTION_MESSAGE);
         }
         if(e.getSource()==AIModeLeftButton){
             AIModeDisappear();
             gameModeAppear();
         }
         if(e.getSource()==AIModeRightButton){
-
+            mainframe.setVisible(false);
+            gameframe.setVisible(true);
         }
         if(e.getSource()==AIModeQuestionButton){
-            JOptionPane.showMessageDialog(null, "è¿™é‡Œç»™å‡ºæœ¬æ¸¸æˆAIæ¨¡å¼çš„ç–‘é—®è§£ç­”\r\nå¦‚æœæ‚¨æœ‰ä»€ä¹ˆä¸æ‡‚çš„ï¼Œå¯ä»¥è”ç³»æˆ‘ä»¬121212@gmail.com\r\n", "æç¤º", JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ÕâÀï¸ø³ö±¾ÓÎÏ·AIÄ£Ê½µÄÒÉÎÊ½â´ğ\r\nÈç¹ûÄúÓĞÊ²Ã´²»¶®µÄ£¬¿ÉÒÔÁªÏµÎÒÃÇ121212@gmail.com\r\n", "ÌáÊ¾", JOptionPane.QUESTION_MESSAGE);
         }
-
     }
-
-
 }
 
 
