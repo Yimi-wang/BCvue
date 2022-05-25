@@ -95,8 +95,9 @@ public class cards implements Runnable {
                         应该是这里的reserved方程有问题，才导致bug
                         原来的方法也是把玩家手卡的内容颠倒顺序，说实话我不知道为什么要这么做
                      */
-                    List<Brand> playercardinverse = (List<Brand>) reveresed(j.playercard[0]);
-                        for (Brand card : playercardinverse) {
+                    //List<Brand> playercardinverse = (List<Brand>) reveresed(j.playercard[0]);
+                        //for (Brand card : playercardinverse) {
+                        for(Brand card : j.playercard[0]){
                         Rectangle bounds = mapCards.get(card);
                         if (bounds.contains(e.getPoint())) {
                             selected = card;
@@ -113,7 +114,7 @@ public class cards implements Runnable {
 
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(400, 400);
+            return new Dimension(1200, 400);
         }
 
         @Override
@@ -121,11 +122,17 @@ public class cards implements Runnable {
             super.invalidate();
             mapCards.clear();
             //画长方形，并且将每个长方形和card绑定
-            int cardHeight = (getHeight() - 20) / 3;
+            //确定每个卡片的高与宽
+            int cardHeight = (getHeight() - 20) / 6;
             int cardWidth = (int) (cardHeight * 0.6);
-            int xDelta = cardWidth / 2;
-            int xPos = (int) ((getWidth() / 2) - (cardWidth * (j.playercard[0].size() / 4.0)));
+            //int xDelta = cardWidth / 2;
+            //每个卡片的偏移量
+            int xDelta = cardWidth +5;
+            //int xPos = (int) ((getWidth() / 2) - (cardWidth * (j.playercard[0].size() / 4.0)));
+            //第一个卡片的横坐标和纵坐标
+            int xPos = getWidth() / 10;
             int yPos = (getHeight() - 20) - cardHeight;
+            //建立一个hashmap，使每个长方形和每个卡片进行对应。
             for (Brand card : j.playercard[0]) {
                 Rectangle bounds = new Rectangle(xPos, yPos, cardWidth, cardHeight);
                 mapCards.put(card, bounds);
@@ -140,7 +147,8 @@ public class cards implements Runnable {
 
             for (Brand card : j.playercard[0]) {
                 Rectangle bounds = mapCards.get(card);
-                System.out.println(bounds);
+                //System.out.println(bounds);
+                //根据长方形的位置，填充图片
                 if (bounds != null) {
                     BufferedImage imageCard;
                     File imgFile = new File("./bridgechinoise-New Version/bridgechinoise/res/images/card (" + card.id + ").gif");
@@ -149,9 +157,13 @@ public class cards implements Runnable {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    int cardHeight = (getHeight() - 20) / 3;
+                    int cardHeight = (getHeight() - 20) / 6;
                     int cardWidth = (int) (cardHeight * 0.6);
+                    //画图像
                     g2d.drawImage(imageCard, bounds.x, bounds.y, cardWidth, cardHeight, null);
+                    //画长方形边框
+                    g2d.setColor(Color.BLACK);
+                    g2d.draw(bounds);
                 }
             }
             g2d.dispose();

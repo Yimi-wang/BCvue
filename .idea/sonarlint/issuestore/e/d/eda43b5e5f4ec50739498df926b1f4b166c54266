@@ -1,0 +1,27 @@
+
+f	java:S117S"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥˜ë×
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¬¡Å©øÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¦ÆİÁÿÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(­ÖƒÈúÿÿÿÿ
+Y
+java:S1155#">Use isEmpty() to check whether the collection is empty or not.(£ÖŠöùÿÿÿÿ
+S	java:S106$"9Replace this use of System.out or System.err by a logger.( öøÿÿÿÿ
+N	java:S1064"9Replace this use of System.out or System.err by a logger.(†Şª¹
+S	java:S1065"9Replace this use of System.out or System.err by a logger.(­ÖƒÈúÿÿÿÿ
+Y
+java:S1155?">Use isEmpty() to check whether the collection is empty or not.(£ÖŠöùÿÿÿÿ
+S	java:S106@"9Replace this use of System.out or System.err by a logger.( öøÿÿÿÿ
+Q	java:S125N"<This block of commented-out lines of code should be removed.(éÛöä
+c	java:S100S"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥˜ë×
+V	java:S125T"<This block of commented-out lines of code should be removed.(—äÖ°ûÿÿÿÿ
+S	java:S106V"9Replace this use of System.out or System.err by a logger.(ò¶¥åûÿÿÿÿ
+S	java:S106X"9Replace this use of System.out or System.err by a logger.(‹Ñªıÿÿÿÿ
+<	java:S131[""Add a default case to this switch.(–Ãê›ûÿÿÿÿ
+S	java:S106i"9Replace this use of System.out or System.err by a logger.(éĞ«şÿÿÿÿ
+S	java:S106k"9Replace this use of System.out or System.err by a logger.(ì•ù†øÿÿÿÿ
+o
+java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(æ¡‚«ÿÿÿÿÿ
+j
+java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(ÊŞ×
+o
+java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(ı¥†şÿÿÿÿ
