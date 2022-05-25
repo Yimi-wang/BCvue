@@ -47,6 +47,9 @@ public class Main extends JFrame implements ActionListener{
     //对手手上的牌
     List<Card> fighterCards;
 
+    //定义六个牌堆
+    List<Card> heapCardsList[] = new ArrayList[6];
+
     Card card[]=new Card[53];
 
     JTextField time[] = new JTextField[3]; //计时器
@@ -277,20 +280,14 @@ public class Main extends JFrame implements ActionListener{
 
 
         gameframe = new JFrame("Bcvue game");
-        gameframe.setSize(830,620);
+        gameframe.setSize(1000,800);
         gameframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        gameframe.setResizable(false);
         gameframe.setLocationRelativeTo(getOwner()); // 屏幕居中
         gameContentPanel = gameframe.getContentPane();
         gameContentPanel.setLayout(null);
-        JButton jButton = new JButton("test");
-        jButton.setBounds(10,10,100,30);
-        jButton.setFont(new Font("宋体", Font.PLAIN, 14));
-        gameContentPanel.add(jButton);
 
         gameContentPanel.setBackground(new Color(46,139,87)); //设置背景颜色
-
-
 
 
     }
@@ -310,7 +307,7 @@ public class Main extends JFrame implements ActionListener{
                     break;
                 else {
                     card[count] = new Card( i + "-" + j, false);
-                    card[count].setLocation(350, 200);
+                    card[count].setLocation(400, 250);
                     gameContentPanel.add(card[count]);
                     count++;
                 }
@@ -335,18 +332,69 @@ public class Main extends JFrame implements ActionListener{
         boolean b=false;
         for(int i=1;i<=22;i++){
             if(b){
-                Common.move(card[i],card[i].getLocation(), new Point(180+i*20,450));
+                Common.move(card[i],card[i].getLocation(), new Point(250+i*20,630));
                 card[i].canClick=true;
                 playerCards.add(card[i]);
                 card[i].turnFront();
                 b = false;
             }else{
-                Common.move(card[i],card[i].getLocation(), new Point(180+i*20,50));
+                Common.move(card[i],card[i].getLocation(), new Point(250+i*20,30));
                 card[i].canClick=true;
                 fighterCards.add(card[i]);
                 card[i].turnBack();
                 b = true;
             }
+        }
+
+
+        for(int i=0;i<=5;i++){
+            heapCardsList[i]=new ArrayList<>();
+        }
+
+        for(int i=23;i<53;i++){
+            switch(i%6){
+                case 0:
+                    Common.move(card[i],card[i].getLocation(), new Point(100+(i-23)*5,160));
+                    card[i].canClick=true;
+                    heapCardsList[0].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 1:
+                    Common.move(card[i],card[i].getLocation(), new Point(100+(i-23)*5,320));
+                    card[i].canClick=true;
+                    heapCardsList[1].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 2:
+                    Common.move(card[i],card[i].getLocation(), new Point(100+(i-23)*5,480));
+                    card[i].canClick=true;
+                    heapCardsList[2].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 3:
+                    Common.move(card[i],card[i].getLocation(), new Point(700+(i-23)*5,160));
+                    card[i].canClick=true;
+                    heapCardsList[3].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 4:
+                    Common.move(card[i],card[i].getLocation(), new Point(700+(i-23)*5,320));
+                    card[i].canClick=true;
+                    heapCardsList[4].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 5:
+                    Common.move(card[i],card[i].getLocation(), new Point(700+(i-23)*5,480));
+                    card[i].canClick=true;
+                    heapCardsList[5].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                default:
+                    break;
+
+            }
+
+
 
         }
 
