@@ -13,7 +13,7 @@ import java.awt.*;
  * close.setBorder(new RoundBorder());黑色的圆角边框
  * close.setBorder(new RoundBorder(Color.RED)); 红色的圆角边框
  *
- * @author Monsoons
+ * @author caifl
  */
 public class RoundBorder implements Border {
     private Color color;
