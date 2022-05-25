@@ -1,0 +1,18 @@
+
+`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+f	java:S117&"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(çóÇÀ
+f	java:S1173"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ôÖ¸ð
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¬¡Å©øÿÿÿÿ
+c
+java:S2095)"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(Ö¦ˆÖúÿÿÿÿ
+Z
+java:S2147"DCombine this catch with the one at line 27, which has the same body.(ýàÑÎ
+Q	java:S125!"<This block of commented-out lines of code should be removed.(Á¥ÊÎ
+Ž
+java:S1130%"yRemove the declaration of thrown exception 'java.lang.ClassNotFoundException', as it cannot be thrown from method's body.(Ðï%
+S	java:S1066"9Replace this use of System.out or System.err by a logger.(Ñá‹Õúÿÿÿÿ
+M	java:S106A"9Replace this use of System.out or System.err by a logger.(ìÁ7
+M
+java:S1135J"2Complete the task associated to this TODO comment.(ÕÌ®þÿÿÿÿ
+V	java:S125M"<This block of commented-out lines of code should be removed.(ÿ³Ãøÿÿÿÿ
