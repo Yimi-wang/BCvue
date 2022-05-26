@@ -57,6 +57,7 @@ public class Main extends JFrame implements ActionListener{
     boolean nextPlayer = false;
 
 
+
     /**
      * Launch the application.
      */
@@ -73,18 +74,20 @@ public class Main extends JFrame implements ActionListener{
 //            }
 //        });
         new Main();
-
-
     }
 
     /**
      * Create the application.
      */
     public Main() {
-        initialize();
-        mainframe.setVisible(true);
-        addEventListener();
-
+//        initialize();
+//        mainframe.setVisible(true);
+//        addEventListener();
+        initializeGameFrame();
+        gameframe.setVisible(true);
+        CardInit();
+        Time.second(1);
+        setHeapCardLastFront();
 
 
     }
@@ -269,147 +272,6 @@ public class Main extends JFrame implements ActionListener{
 
 
 
-//    private void initGame(){
-//        initializeGameFrame();
-//        gameframe.setVisible(true);
-//        CardInit();
-//    }
-
-    public void initializeGameFrame(){
-
-        this.gameframe = new JFrame("Bcvue game");
-        gameframe.setSize(1000,800);
-        gameframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        gameframe.setResizable(false);
-        gameframe.setLocationRelativeTo(getOwner()); // 屏幕居中
-        gameContentPanel = gameframe.getContentPane();
-        gameContentPanel.setLayout(null);
-
-        gameContentPanel.setBackground(new Color(46,139,87)); //设置背景颜色
-
-
-    }
-
-
-    //初始化牌及牌的发牌动态效果演示
-    private void CardInit(){
-        int count =1 ;
-//
-//        Card card1 = new Card( "1-1", false);
-//        card1.setBounds(100,100,70,100);
-//        gameContentPanel.add(card1);
-
-        //初始化牌
-        for (int i = 1; i <= 5; i++) {
-            for (int j = 1; j <= 13; j++) {
-                if (i == 5)
-                    break;
-                else {
-                    card[count] = new Card( i + "-" + j, false);
-                    card[count].setLocation(400, 250);
-                    gameContentPanel.add(card[count]);
-                    count++;
-                }
-            }
-        }
-
-        //打乱顺序
-        for(int i=0;i<100;i++){
-            Random random=new Random();
-            int a=random.nextInt(52)+1;
-            int b=random.nextInt(52)+1;
-            Card k=card[a];
-            card[a]=card[b];
-            card[b]=k;
-        }
-
-        //开始发牌
-        //初始化我的牌列表与对手牌列表
-        fighterCards = new ArrayList<>();
-        playerCards = new ArrayList<>();
-        //先发两个人的牌
-        boolean b=false;
-        int t=0;
-        for(int i=1;i<=22;i++){
-            if(i%2==0){
-                t++;
-            }
-            if(b){
-                Common.move(card[i],card[i].getLocation(), new Point(340+t*25,620));
-                card[i].canClick=true;
-                playerCards.add(card[i]);
-                card[i].turnFront();
-                b = false;
-            }else{
-                Common.move(card[i],card[i].getLocation(), new Point(340+t*25,30));
-                card[i].canClick=true;
-                fighterCards.add(card[i]);
-                card[i].turnBack();
-                b = true;
-            }
-            gameContentPanel.setComponentZOrder(card[i], 0);
-        }
-
-
-        for(int i=0;i<=5;i++){
-            heapCardsList[i]=new ArrayList<>();
-        }
-
-        int k=0;
-        for(int i=23;i<53;i++){
-            switch((i-23)%6){
-                case 0:
-                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,160));
-                    heapCardsList[0].add(card[i]);
-                    card[i].turnBack();
-                    break;
-                case 1:
-                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,320));
-                    heapCardsList[1].add(card[i]);
-                    card[i].turnBack();
-                    break;
-                case 2:
-                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,480));
-                    heapCardsList[2].add(card[i]);
-                    card[i].turnBack();
-                    break;
-                case 3:
-                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,160));
-
-                    heapCardsList[3].add(card[i]);
-                    card[i].turnBack();
-                    break;
-                case 4:
-                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,320));
-                    heapCardsList[4].add(card[i]);
-                    card[i].turnBack();
-                    break;
-                case 5:
-                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,480));
-                    heapCardsList[5].add(card[i]);
-                    card[i].turnBack();
-                    break;
-                default:
-                    break;
-
-            }
-            if(i%6==0)
-                k++;
-            //设置最新的牌在顶层
-            gameContentPanel.setComponentZOrder(card[i], 0);
-        }
-
-
-        //重新对牌进行排序
-        Common.order(fighterCards);
-        Common.order(playerCards);
-        Common.rePosition(gameContentPanel,fighterCards, 1); //0是fighter
-        Common.rePosition(gameContentPanel,playerCards, 2); //1是player
-
-
-    }
-
-
     //gameMode消失
     public void gameModeDisappear(){
         lblGameMode.setVisible(false);
@@ -532,6 +394,155 @@ public class Main extends JFrame implements ActionListener{
             JOptionPane.showMessageDialog(null, "这里给出本游戏AI模式的疑问解答\r\n如果您有什么不懂的，可以联系我们121212@gmail.com\r\n", "提示", JOptionPane.QUESTION_MESSAGE);
         }
     }
+
+
+
+//    private void initGame(){
+//        initializeGameFrame();
+//        gameframe.setVisible(true);
+//        CardInit();
+//    }
+
+    public void initializeGameFrame(){
+
+        this.gameframe = new JFrame("Bcvue game");
+        gameframe.setSize(1000,800);
+        gameframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        gameframe.setResizable(false);
+        gameframe.setLocationRelativeTo(getOwner()); // 屏幕居中
+        gameContentPanel = gameframe.getContentPane();
+        gameContentPanel.setLayout(null);
+        gameContentPanel.setBackground(new Color(46,139,87)); //设置背景颜色
+
+    }
+
+
+    //初始化牌及牌的发牌动态效果演示
+    private void CardInit(){
+        int count =1 ;
+//
+//        Card card1 = new Card( "1-1", false);
+//        card1.setBounds(100,100,70,100);
+//        gameContentPanel.add(card1);
+
+        //初始化牌
+        for (int i = 1; i <= 5; i++) {
+            for (int j = 1; j <= 13; j++) {
+                if (i == 5)
+                    break;
+                else {
+                    card[count] = new Card( i + "-" + j, false);
+                    card[count].setLocation(400, 250);
+                    gameContentPanel.add(card[count]);
+                    count++;
+                }
+            }
+        }
+
+        //打乱顺序
+        for(int i=0;i<100;i++){
+            Random random=new Random();
+            int a=random.nextInt(52)+1;
+            int b=random.nextInt(52)+1;
+            Card k=card[a];
+            card[a]=card[b];
+            card[b]=k;
+        }
+
+        //开始发牌
+        //初始化我的牌列表与对手牌列表
+        fighterCards = new ArrayList<>();
+        playerCards = new ArrayList<>();
+        //先发两个人的牌
+        boolean b=false;
+        int t=0;
+        for(int i=1;i<=22;i++){
+            if(i%2==0){
+                t++;
+            }
+            if(b){
+                Common.move(card[i],card[i].getLocation(), new Point(340+t*25,620));
+                card[i].canClick=true;
+                playerCards.add(card[i]);
+                card[i].turnFront();
+                b = false;
+            }else{
+                Common.move(card[i],card[i].getLocation(), new Point(340+t*25,30));
+                card[i].canClick=true;
+                fighterCards.add(card[i]);
+                card[i].turnBack();
+                b = true;
+            }
+            gameContentPanel.setComponentZOrder(card[i], 0);
+        }
+
+
+        for(int i=0;i<=5;i++){
+            heapCardsList[i]=new ArrayList<>();
+        }
+
+        int k=0;
+        for(int i=23;i<53;i++){
+            switch((i-23)%6){
+                case 0:
+                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,160));
+                    heapCardsList[0].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 1:
+                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,320));
+                    heapCardsList[1].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 2:
+                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,480));
+                    heapCardsList[2].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 3:
+                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,160));
+
+                    heapCardsList[3].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 4:
+                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,320));
+                    heapCardsList[4].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                case 5:
+                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,480));
+                    heapCardsList[5].add(card[i]);
+                    card[i].turnBack();
+                    break;
+                default:
+                    break;
+
+            }
+            if(i%6==0)
+                k++;
+            //设置最新的牌在顶层
+            gameContentPanel.setComponentZOrder(card[i], 0);
+        }
+
+
+        //重新对牌进行排序
+        Common.order(fighterCards);
+        Common.order(playerCards);
+        Common.rePosition(gameContentPanel,fighterCards, 1); //0是fighter
+        Common.rePosition(gameContentPanel,playerCards, 2); //1是player
+    }
+
+
+    // 分别对六个牌堆的最后一张进行翻牌
+    public void setHeapCardLastFront(){
+        for (List<Card> cardList : heapCardsList) {
+            cardList.get(cardList.size()-1).turnFront();
+        }
+    }
+
+
+
 }
 
 
