@@ -72,19 +72,22 @@ public class Main extends JFrame implements ActionListener{
 //                }
 //            }
 //        });
+        new Main();
 
-        Main window = new Main();
-        window.mainframe.setVisible(true);
-//        window.gameframe.setVisible(true);
+
     }
 
     /**
      * Create the application.
      */
     public Main() {
-        initialize();
-        initGame();
-        addEventListener();
+//        initialize();
+//        mainframe.setVisible(true);
+//        addEventListener();
+        initializeGameFrame();
+        gameframe.setVisible(true);
+        CardInit();
+
 
     }
 
@@ -268,16 +271,13 @@ public class Main extends JFrame implements ActionListener{
 
 
 
-    private void initGame(){
-        initializeGameFrame();
-
-        CardInit();
-
-    }
+//    private void initGame(){
+//        initializeGameFrame();
+//        gameframe.setVisible(true);
+//        CardInit();
+//    }
 
     public void initializeGameFrame(){
-
-
 
         gameframe = new JFrame("Bcvue game");
         gameframe.setSize(1000,800);
@@ -293,6 +293,7 @@ public class Main extends JFrame implements ActionListener{
     }
 
 
+    //初始化牌及牌的发牌动态效果演示
     private void CardInit(){
         int count =1 ;
 //
@@ -330,20 +331,25 @@ public class Main extends JFrame implements ActionListener{
         playerCards = new ArrayList<>();
         //先发两个人的牌
         boolean b=false;
+        int t=0;
         for(int i=1;i<=22;i++){
+            if(i%2==0){
+                t++;
+            }
             if(b){
-                Common.move(card[i],card[i].getLocation(), new Point(250+i*20,630));
+                Common.move(card[i],card[i].getLocation(), new Point(340+t*25,620));
                 card[i].canClick=true;
                 playerCards.add(card[i]);
                 card[i].turnFront();
                 b = false;
             }else{
-                Common.move(card[i],card[i].getLocation(), new Point(250+i*20,30));
+                Common.move(card[i],card[i].getLocation(), new Point(340+t*25,30));
                 card[i].canClick=true;
                 fighterCards.add(card[i]);
                 card[i].turnBack();
                 b = true;
             }
+            gameContentPanel.setComponentZOrder(card[i], 0);
         }
 
 
@@ -351,41 +357,37 @@ public class Main extends JFrame implements ActionListener{
             heapCardsList[i]=new ArrayList<>();
         }
 
+        int k=0;
         for(int i=23;i<53;i++){
-            switch(i%6){
+            switch((i-23)%6){
                 case 0:
-                    Common.move(card[i],card[i].getLocation(), new Point(100+(i-23)*5,160));
-                    card[i].canClick=true;
+                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,160));
                     heapCardsList[0].add(card[i]);
                     card[i].turnBack();
                     break;
                 case 1:
-                    Common.move(card[i],card[i].getLocation(), new Point(100+(i-23)*5,320));
-                    card[i].canClick=true;
+                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,320));
                     heapCardsList[1].add(card[i]);
                     card[i].turnBack();
                     break;
                 case 2:
-                    Common.move(card[i],card[i].getLocation(), new Point(100+(i-23)*5,480));
-                    card[i].canClick=true;
+                    Common.move(card[i],card[i].getLocation(), new Point(100+k*10,480));
                     heapCardsList[2].add(card[i]);
                     card[i].turnBack();
                     break;
                 case 3:
-                    Common.move(card[i],card[i].getLocation(), new Point(700+(i-23)*5,160));
-                    card[i].canClick=true;
+                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,160));
+
                     heapCardsList[3].add(card[i]);
                     card[i].turnBack();
                     break;
                 case 4:
-                    Common.move(card[i],card[i].getLocation(), new Point(700+(i-23)*5,320));
-                    card[i].canClick=true;
+                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,320));
                     heapCardsList[4].add(card[i]);
                     card[i].turnBack();
                     break;
                 case 5:
-                    Common.move(card[i],card[i].getLocation(), new Point(700+(i-23)*5,480));
-                    card[i].canClick=true;
+                    Common.move(card[i],card[i].getLocation(), new Point(700+k*10,480));
                     heapCardsList[5].add(card[i]);
                     card[i].turnBack();
                     break;
@@ -393,10 +395,18 @@ public class Main extends JFrame implements ActionListener{
                     break;
 
             }
-
-
-
+            if(i%6==0)
+                k++;
+            //设置最新的牌在顶层
+            gameContentPanel.setComponentZOrder(card[i], 0);
         }
+
+
+        //重新对牌进行排序
+        Common.order(fighterCards);
+        Common.order(playerCards);
+        Common.rePosition(gameContentPanel,fighterCards, 1); //0是fighter
+        Common.rePosition(gameContentPanel,playerCards, 2); //1是player
 
 
     }
@@ -410,6 +420,14 @@ public class Main extends JFrame implements ActionListener{
         GameModeInputJSP.setVisible(false);
         GameModeLeftButton.setVisible(false);
         GameModeRightButton.setVisible(false);
+    }
+
+
+    //设置卡牌可被点击
+    public void CardCanClick(boolean b){
+        for(int i=1;i<53;i++){
+            card[i].canClick=b;
+        }
     }
 
     //gameMode出现
@@ -462,6 +480,7 @@ public class Main extends JFrame implements ActionListener{
 
     }
 
+    //主JFrame按钮点击事件注册
     public void addEventListener() {
 
         //主界面按钮
@@ -506,7 +525,7 @@ public class Main extends JFrame implements ActionListener{
         }
         if(e.getSource()==AIModeRightButton){
             mainframe.setVisible(false);
-            gameframe.setVisible(true);
+//            initGame();
         }
         if(e.getSource()==AIModeQuestionButton){
             JOptionPane.showMessageDialog(null, "这里给出本游戏AI模式的疑问解答\r\n如果您有什么不懂的，可以联系我们121212@gmail.com\r\n", "提示", JOptionPane.QUESTION_MESSAGE);
