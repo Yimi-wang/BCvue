@@ -104,15 +104,25 @@ public class Main extends JFrame implements ActionListener{
      * Create the application.
      */
     public Main() {
+        //使用主界面模式则取消注释，将游戏界面模式注释掉，主界面模式看不到发牌效果
+        //主界面模式
 //        initialize();
 //        mainframe.setVisible(true);
 //        addMainFrameEventListener();
+//        initializeGameFrame();
+//        gameframe.setVisible(false);
+//        addGameFrameEventListener();
+
+        //只看游戏界面模式
         initializeGameFrame();
         gameframe.setVisible(true);
         addGameFrameEventListener();
         CardInit();
         Time.second(1);
         setHeapCardLastFront();
+
+
+
 
 
     }
@@ -417,14 +427,23 @@ public class Main extends JFrame implements ActionListener{
         }
         if(e.getSource()==AIModeRightButton){
             this.mainframe.setVisible(false);
-//            initGame();
-            initializeGameFrame();
-            this.gameframe.setVisible(true);
+////            initGame();
+//            initializeGameFrame();
+//            this.gameframe.setVisible(true);
+//            CardInit();
+
+//            initializeGameFrame();
+//            gameframe.setVisible(false);
+//            addGameFrameEventListener();
+            gameframe.setVisible(true);
             CardInit();
+            Time.second(1);
+            setHeapCardLastFront();
         }
         if(e.getSource()==AIModeQuestionButton){
             JOptionPane.showMessageDialog(null, "这里给出本游戏AI模式的疑问解答\r\n如果您有什么不懂的，可以联系我们121212@gmail.com\r\n", "提示", JOptionPane.QUESTION_MESSAGE);
         }
+        //发牌按钮点击事件
         if(e.getSource()==sendCardButton){
             for (Card playerCard : playerCards) {
                 if(playerCard.clicked){
