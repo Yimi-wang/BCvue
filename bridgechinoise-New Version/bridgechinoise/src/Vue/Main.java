@@ -81,12 +81,10 @@ public class Main extends JFrame implements ActionListener{
      * Create the application.
      */
     public Main() {
-//        initialize();
-//        mainframe.setVisible(true);
-//        addEventListener();
-        initializeGameFrame();
-        gameframe.setVisible(true);
-        CardInit();
+        initialize();
+        mainframe.setVisible(true);
+        addEventListener();
+
 
 
     }
@@ -279,7 +277,7 @@ public class Main extends JFrame implements ActionListener{
 
     public void initializeGameFrame(){
 
-        gameframe = new JFrame("Bcvue game");
+        this.gameframe = new JFrame("Bcvue game");
         gameframe.setSize(1000,800);
         gameframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        gameframe.setResizable(false);
@@ -524,8 +522,11 @@ public class Main extends JFrame implements ActionListener{
             gameModeAppear();
         }
         if(e.getSource()==AIModeRightButton){
-            mainframe.setVisible(false);
+            this.mainframe.setVisible(false);
 //            initGame();
+            initializeGameFrame();
+            this.gameframe.setVisible(true);
+            CardInit();
         }
         if(e.getSource()==AIModeQuestionButton){
             JOptionPane.showMessageDialog(null, "这里给出本游戏AI模式的疑问解答\r\n如果您有什么不懂的，可以联系我们121212@gmail.com\r\n", "提示", JOptionPane.QUESTION_MESSAGE);
