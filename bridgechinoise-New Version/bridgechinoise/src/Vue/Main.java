@@ -60,7 +60,7 @@ public class Main extends JFrame implements ActionListener{
 
     JTextField time[] = new JTextField[3]; //计时器
 
-    boolean nextPlayer = false;
+    boolean isAISending = false;
 
 
     //分支记录参数及标签
@@ -120,6 +120,13 @@ public class Main extends JFrame implements ActionListener{
         CardInit();
         Time.second(1);
         setHeapCardLastFront();
+
+
+
+
+
+
+//        SwingUtilities.invokeLater(new GameTime(this));
 
 
 
@@ -457,6 +464,11 @@ public class Main extends JFrame implements ActionListener{
                 point.setLocation(500, 430);
                 Common.move(tCard,tCard.getLocation(), point);
                 Common.rePosition(gameContentPanel,playerCards, 2);
+                isAISending = true;
+
+
+                fighterSendCard();
+
             }
         }
     }
@@ -541,9 +553,13 @@ public class Main extends JFrame implements ActionListener{
 
 
 
-
         return true;
     }
+
+
+
+
+
 
 
 
@@ -676,7 +692,68 @@ public class Main extends JFrame implements ActionListener{
     }
 
 
+    //AI发送卡牌函数
+    public void fighterSendCard(){
+        int size = fighterCards.size();
+        int i = new Random().nextInt(size); //随机获取AI现有卡牌中的一张
+        Card card1 = fighterCards.get(i);
+        fighterCards.remove(card1); //将卡牌从AI卡牌数组中移除
+        sentCards.add(card1); //记录到已打出的卡牌数组中
+        frontCards.add(card1); //记录到翻面卡牌数组中
+        Point point = new Point(); //设置新的点
+        point.setLocation(350, 200);
+        card1.turnFront(); //卡牌翻面
+        Common.move(card1, card1.getLocation(), point); //移动卡牌到指定位置
+        Common.rePosition(gameContentPanel,fighterCards, 1);
 
+    }
 }
+//class GameTime extends Thread{
+//    Main main;
+//
+//    public GameTime(Main main){
+//        this.main = main;
+//    }
+//
+//    @Override
+//    public void run() {
+////        while(main.playerCards.size()<=0 || main.fighterCards.size()<=0){
+////
+////        }
+//
+////        while(true){
+////            Time.second(10);
+////            if(main.isAISending){
+////                main.fighterSendCard();
+////
+////                break;
+////            }
+////        }
+//        GameTime2 gameTime2 = new GameTime2(main);
+//        gameTime2.run();
+//    }
+//}
+//
+//
+//class GameTime2 extends Thread{
+//    Main main;
+//
+//    public GameTime2(Main main){
+//        this.main = main;
+//    }
+//
+//    @Override
+//    public void run() {
+//        while(true){
+//            Time.second(10);
+//            if(main.isAISending){
+//                main.fighterSendCard();
+//
+//                break;
+//            }
+//        }
+//
+//    }
+//}
 
 
