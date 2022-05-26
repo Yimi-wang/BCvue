@@ -50,7 +50,7 @@ public class Main extends JFrame implements ActionListener{
     //定义六个牌堆
     List<Card> heapCardsList[] = new ArrayList[6];
 
-    Card card[]=new Card[53];
+    Card card[]=new Card[54];
 
     JTextField time[] = new JTextField[3]; //计时器
 
