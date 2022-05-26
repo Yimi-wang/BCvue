@@ -47,6 +47,12 @@ public class Main extends JFrame implements ActionListener{
     //对手手上的牌
     List<Card> fighterCards;
 
+    //桌面已出的牌
+    List<Card> sentCards;
+
+    // 已翻面但还未出的牌
+    List<Card> frontCards;
+
     //定义六个牌堆
     List<Card> heapCardsList[] = new ArrayList[6];
 
@@ -55,6 +61,24 @@ public class Main extends JFrame implements ActionListener{
     JTextField time[] = new JTextField[3]; //计时器
 
     boolean nextPlayer = false;
+
+
+    //分支记录参数及标签
+    JLabel gameScoreLabel;
+
+    int playerScore=0;
+
+    JLabel playerScoreLabel;
+
+    int fighterScore=0;
+
+    JLabel fighterScoreLabel;
+
+    //出牌按钮
+    JButton sendCardButton;
+
+    //替换Card
+    Card tCard;
 
 
 
@@ -82,9 +106,10 @@ public class Main extends JFrame implements ActionListener{
     public Main() {
 //        initialize();
 //        mainframe.setVisible(true);
-//        addEventListener();
+//        addMainFrameEventListener();
         initializeGameFrame();
         gameframe.setVisible(true);
+        addGameFrameEventListener();
         CardInit();
         Time.second(1);
         setHeapCardLastFront();
@@ -341,7 +366,7 @@ public class Main extends JFrame implements ActionListener{
     }
 
     //主JFrame按钮点击事件注册
-    public void addEventListener() {
+    public void addMainFrameEventListener() {
 
         //主界面按钮
         btnStartButton.addActionListener(this);
@@ -358,6 +383,13 @@ public class Main extends JFrame implements ActionListener{
         AIModeLeftButton.addActionListener(this);
         AIModeRightButton.addActionListener(this);
         AIModeQuestionButton.addActionListener(this);
+    }
+
+
+
+    //游戏JFrame按钮点击事件注册
+    public void addGameFrameEventListener(){
+        sendCardButton.addActionListener(this);
     }
 
 
@@ -393,6 +425,21 @@ public class Main extends JFrame implements ActionListener{
         if(e.getSource()==AIModeQuestionButton){
             JOptionPane.showMessageDialog(null, "这里给出本游戏AI模式的疑问解答\r\n如果您有什么不懂的，可以联系我们121212@gmail.com\r\n", "提示", JOptionPane.QUESTION_MESSAGE);
         }
+        if(e.getSource()==sendCardButton){
+            for (Card playerCard : playerCards) {
+                if(playerCard.clicked){
+                    tCard = playerCard;
+                    break;
+                }
+            }
+            if(tCard!=null){
+                playerCards.remove(tCard);
+                Point point = new Point();
+                point.setLocation(500, 430);
+                Common.move(tCard,tCard.getLocation(), point);
+                Common.rePosition(gameContentPanel,playerCards, 2);
+            }
+        }
     }
 
 
@@ -411,10 +458,77 @@ public class Main extends JFrame implements ActionListener{
 //        gameframe.setResizable(false);
         gameframe.setLocationRelativeTo(getOwner()); // 屏幕居中
         gameContentPanel = gameframe.getContentPane();
+
+
+        //分值记录标签
+        gameScoreLabel = new JLabel("Game points");
+        gameScoreLabel.setBounds(780, 15, 200, 25);
+        Font f11 = new Font("隶书",Font.PLAIN,30);
+        gameScoreLabel.setFont(f11);
+        Color fg11 = new Color(255,255,255);
+        gameScoreLabel.setForeground(fg11);
+        gameContentPanel.add(gameScoreLabel);
+
+        fighterScoreLabel = new JLabel("fighter points: "+fighterScore);
+        fighterScoreLabel.setBounds(780, 55, 200, 20);
+        Font f13 = new Font("隶书",Font.PLAIN,20);
+        fighterScoreLabel.setFont(f13);
+        Color fg13 = new Color(255,255,255);
+        fighterScoreLabel.setForeground(fg13);
+        gameContentPanel.add(fighterScoreLabel);
+
+        playerScoreLabel = new JLabel("your points: "+playerScore);
+        playerScoreLabel.setBounds(780, 85, 200, 20);
+        Font f12 = new Font("隶书",Font.PLAIN,20);
+        playerScoreLabel.setFont(f12);
+        Color fg12 = new Color(255,255,255);
+        playerScoreLabel.setForeground(fg12);
+        gameContentPanel.add(playerScoreLabel);
+
+        //初始化牌组
+        sentCards = new ArrayList<>();
+        frontCards = new ArrayList<>();
+
+
+
+        //出牌按钮
+        sendCardButton = new JButton("出牌");
+        sendCardButton.setBounds(500, 560, 100, 30);
+        gameContentPanel.add(sendCardButton);
+
+
+
+
         gameContentPanel.setLayout(null);
         gameContentPanel.setBackground(new Color(46,139,87)); //设置背景颜色
 
     }
+
+
+    //更新用户以及对手得分
+    public void setScore(int flag, int score){
+        if(flag==1){//为1时，是fighter
+            fighterScoreLabel.setText("fighter points: "+score);
+        }
+        if(flag==2){
+            playerScoreLabel.setText("your points: "+score);
+        }
+    }
+
+
+    //根据六张翻面的牌判断能否出牌
+    public boolean checkCards(List<Card> c,List<Card>[] current){
+        //待完善
+
+
+
+
+        return true;
+    }
+
+
+
+
 
 
     //初始化牌及牌的发牌动态效果演示
@@ -529,14 +643,15 @@ public class Main extends JFrame implements ActionListener{
         //重新对牌进行排序
         Common.order(fighterCards);
         Common.order(playerCards);
-        Common.rePosition(gameContentPanel,fighterCards, 1); //0是fighter
-        Common.rePosition(gameContentPanel,playerCards, 2); //1是player
+        Common.rePosition(gameContentPanel,fighterCards, 1); //1是fighter
+        Common.rePosition(gameContentPanel,playerCards, 2); //2是player
     }
 
 
     // 分别对六个牌堆的最后一张进行翻牌
     public void setHeapCardLastFront(){
         for (List<Card> cardList : heapCardsList) {
+            frontCards.add(cardList.get(cardList.size()-1));
             cardList.get(cardList.size()-1).turnFront();
         }
     }
