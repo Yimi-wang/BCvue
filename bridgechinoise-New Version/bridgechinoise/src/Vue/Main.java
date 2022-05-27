@@ -81,6 +81,46 @@ public class Main extends JFrame implements ActionListener{
     Card tCard;
 
 
+    //Settings 设置
+    JFrame settingJframe;
+
+    Container settingContentPanel;
+
+    JLabel settingJLabel;
+
+    JLabel settingDesktoplbl;
+
+    JLabel settingCardBack;
+
+    JLabel settingShowCard;
+
+
+
+    JRadioButton backradioBtn1;
+
+    JRadioButton backradioBtn2;
+
+    JRadioButton backradioBtn3;
+
+    JRadioButton cardRadioBtn1;
+
+    JRadioButton cardRadioBtn2;
+
+    JRadioButton cardRadioBtn3;
+
+    JRadioButton cardShowBtn1;
+
+    JRadioButton cardShowBtn2;
+
+    JButton settingGetBackBtn;
+
+    JButton settingSaveBackBtn;
+
+
+
+
+
+
 
     /**
      * Launch the application.
@@ -106,20 +146,20 @@ public class Main extends JFrame implements ActionListener{
     public Main() {
         //使用主界面模式则取消注释，将游戏界面模式注释掉，主界面模式看不到发牌效果
         //主界面模式
-//        initialize();
-//        mainframe.setVisible(true);
-//        addMainFrameEventListener();
-//        initializeGameFrame();
-//        gameframe.setVisible(false);
-//        addGameFrameEventListener();
+        initialize();
+        mainframe.setVisible(true);
+        addMainFrameEventListener();
+        initializeGameFrame();
+        gameframe.setVisible(false);
+        addGameFrameEventListener();
 
         //只看游戏界面模式
-        initializeGameFrame();
-        gameframe.setVisible(true);
-        addGameFrameEventListener();
-        CardInit();
-        Time.second(1);
-        setHeapCardLastFront();
+//        initializeGameFrame();
+//        gameframe.setVisible(true);
+//        addGameFrameEventListener();
+//        CardInit();
+//        Time.second(1);
+//        setHeapCardLastFront();
 
 
 
@@ -140,7 +180,8 @@ public class Main extends JFrame implements ActionListener{
     private void initialize() {
         // 初始化窗体
         mainframe = new JFrame("Bcvue game");
-        mainframe.setBounds(300, 300, 720, 506);
+        mainframe.setSize( 720, 506);
+        mainframe.setLocationRelativeTo(getOwner()); // 屏幕居中
         mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainContentPanel = mainframe.getContentPane();
@@ -471,6 +512,45 @@ public class Main extends JFrame implements ActionListener{
 
             }
         }
+        if(e.getSource()==btnSettingButton){
+            mainframe.setVisible(false);
+            initSettingJFrame();
+            addSettingActionListener();
+            settingJframe.setVisible(true);
+        }
+        if(e.getSource()==settingGetBackBtn){
+
+            settingJframe.dispose();
+            mainframe.setVisible(true);
+        }
+        if(e.getSource()==settingSaveBackBtn){
+            String re1,re2,re3;
+            if(backradioBtn1.isSelected()){
+                re1 = "1";
+            } else if (backradioBtn2.isSelected()) {
+                re1 = "2";
+            } else{
+                re1 = "3";
+            }
+            if(cardRadioBtn1.isSelected()){
+                re2 = "1";
+            } else if (cardRadioBtn2.isSelected()) {
+                re2 = "2";
+            } else{
+                re2 = "3";
+            }
+            if(cardShowBtn1.isSelected()){
+                re3 = "1";
+            }else{
+                re3 = "0";
+            }
+            FileUtil.writeProperties("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\res\\default.cfg","BackGround",re1);
+            FileUtil.writeProperties("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\res\\default.cfg","BackCard",re2);
+            FileUtil.writeProperties("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\res\\default.cfg","showcard",re3);
+
+            JOptionPane.showMessageDialog(null, "保存成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+
+        }
     }
 
 
@@ -485,7 +565,7 @@ public class Main extends JFrame implements ActionListener{
 
         this.gameframe = new JFrame("Bcvue game");
         gameframe.setSize(1000,800);
-        gameframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //        gameframe.setResizable(false);
         gameframe.setLocationRelativeTo(getOwner()); // 屏幕居中
         gameContentPanel = gameframe.getContentPane();
@@ -555,13 +635,6 @@ public class Main extends JFrame implements ActionListener{
 
         return true;
     }
-
-
-
-
-
-
-
 
 
 
@@ -707,53 +780,156 @@ public class Main extends JFrame implements ActionListener{
         Common.rePosition(gameContentPanel,fighterCards, 1);
 
     }
-}
-//class GameTime extends Thread{
-//    Main main;
-//
-//    public GameTime(Main main){
-//        this.main = main;
-//    }
-//
-//    @Override
-//    public void run() {
-////        while(main.playerCards.size()<=0 || main.fighterCards.size()<=0){
-////
-////        }
-//
-////        while(true){
-////            Time.second(10);
-////            if(main.isAISending){
-////                main.fighterSendCard();
-////
-////                break;
-////            }
-////        }
-//        GameTime2 gameTime2 = new GameTime2(main);
-//        gameTime2.run();
-//    }
-//}
-//
-//
-//class GameTime2 extends Thread{
-//    Main main;
-//
-//    public GameTime2(Main main){
-//        this.main = main;
-//    }
-//
-//    @Override
-//    public void run() {
-//        while(true){
-//            Time.second(10);
-//            if(main.isAISending){
-//                main.fighterSendCard();
-//
-//                break;
-//            }
-//        }
-//
-//    }
-//}
 
+
+    //setting Gui
+    public void initSettingJFrame(){
+
+        settingJframe = new JFrame("Bcvue game");
+        settingJframe.setSize(600,600);
+        settingJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        gameframe.setResizable(false);
+        settingJframe.setLocationRelativeTo(getOwner()); // 屏幕居中
+        settingContentPanel = settingJframe.getContentPane();
+
+
+        settingGetBackBtn = new JButton("返回");
+        settingGetBackBtn.setBounds(130,500,60,30);
+        settingContentPanel.add(settingGetBackBtn);
+
+
+        settingSaveBackBtn = new JButton("保存");
+        settingSaveBackBtn.setBounds(370,500,60,30);
+        settingContentPanel.add(settingSaveBackBtn);
+
+        //初始化组件
+        settingJLabel = new JLabel("Configuration");
+        settingJLabel.setBounds(220,20,200,30);
+        Font f1 = new Font("隶书",Font.PLAIN,18);
+        settingJLabel.setFont(f1);
+        settingContentPanel.add(settingJLabel);
+
+        JLabel seprate0 = new JLabel("");
+        seprate0.setBounds(0, 55, 10000, 1);
+        seprate0.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        settingContentPanel.add(seprate0);
+
+        settingDesktoplbl = new JLabel("Set desktop background:");
+        settingDesktoplbl.setBounds(30,60,230,30);
+        settingDesktoplbl.setFont(f1);
+        settingContentPanel.add(settingDesktoplbl);
+
+        backradioBtn1 = new JRadioButton("", true);
+        backradioBtn1.setBounds(60,100,30,30);
+        settingContentPanel.add(backradioBtn1);
+        JLabel back1 = new JLabel(SwingUtil.createAutoAdjustIcon("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\back1.png", true));
+        back1.setBounds(90,100,100,60);
+        settingContentPanel.add(back1);
+
+        backradioBtn2 = new JRadioButton("", false);
+        backradioBtn2.setBounds(230,100,30,30);
+        settingContentPanel.add(backradioBtn2);
+        JLabel back2 = new JLabel(SwingUtil.createAutoAdjustIcon("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\back2.png", true));
+        back2.setBounds(260,100,100,60);
+        settingContentPanel.add(back2);
+
+        backradioBtn3 = new JRadioButton("", false);
+        backradioBtn3.setBounds(390,100,30,30);
+        settingContentPanel.add(backradioBtn3);
+        JLabel back3 = new JLabel(SwingUtil.createAutoAdjustIcon("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\back3.png", true));
+        back3.setBounds(420,100,100,60);
+        settingContentPanel.add(back3);
+        ButtonGroup btnBackGroup = new ButtonGroup();
+        btnBackGroup.add(backradioBtn1);
+        btnBackGroup.add(backradioBtn2);
+        btnBackGroup.add(backradioBtn3);
+
+        //分割线
+        JLabel seprate1 = new JLabel("");
+        seprate1.setBounds(0, 180, 10000, 1);
+        seprate1.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        settingContentPanel.add(seprate1);
+
+
+        settingCardBack = new JLabel("Set card background:");
+        settingCardBack.setBounds(30,200,230,30);
+        settingCardBack.setFont(f1);
+        settingContentPanel.add(settingCardBack);
+//
+        cardRadioBtn1 = new JRadioButton("", true);
+        cardRadioBtn1.setBounds(60,250,30,30);
+        settingContentPanel.add(cardRadioBtn1);
+        JLabel cardBack1 = new JLabel(SwingUtil.createAutoAdjustIcon("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\cardBack1.png", true));
+        cardBack1.setBounds(90,250,60,90);
+        settingContentPanel.add(cardBack1);
+
+        cardRadioBtn2 = new JRadioButton("", false);
+        cardRadioBtn2.setBounds(230,250,30,30);
+        settingContentPanel.add(cardRadioBtn2);
+        JLabel cardBack2 = new JLabel(SwingUtil.createAutoAdjustIcon("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\cardBack2.png", true));
+        cardBack2.setBounds(260,250,60,90);
+        settingContentPanel.add(cardBack2);
+
+        cardRadioBtn3 = new JRadioButton("", false);
+        cardRadioBtn3.setBounds(390,250,30,30);
+        settingContentPanel.add(cardRadioBtn3);
+        JLabel cardBack3 = new JLabel(SwingUtil.createAutoAdjustIcon("D:\\OutSourcing\\CardGame\\BCvue\\bridgechinoise-New Version\\bridgechinoise\\src\\images\\cardBack3.png", true));
+        cardBack3.setBounds(420,250,60,90);
+        settingContentPanel.add(cardBack3);
+        ButtonGroup btnCardGroup = new ButtonGroup();
+        btnCardGroup.add(cardRadioBtn1);
+        btnCardGroup.add(cardRadioBtn2);
+        btnCardGroup.add(cardRadioBtn3);
+
+
+        //分割线2
+        JLabel seprate2 = new JLabel("");
+        seprate2.setBounds(0, 390, 10000, 1);
+        seprate2.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        settingContentPanel.add(seprate2);
+
+
+
+        settingShowCard = new JLabel("Show card:");
+        settingShowCard.setBounds(30,400,230,30);
+        settingShowCard.setFont(f1);
+        settingContentPanel.add(settingShowCard);
+
+
+        cardShowBtn1 = new JRadioButton("Yes", true);
+        Font f2 = new Font("隶书",Font.PLAIN,20);
+        cardShowBtn1.setFont(f2);
+        cardShowBtn1.setBounds(120,440,120,30);
+        settingContentPanel.add(cardShowBtn1);
+
+
+        cardShowBtn2 = new JRadioButton("No", false);
+        cardShowBtn2.setFont(f2);
+        cardShowBtn2.setBounds(300,440,120,30);
+        settingContentPanel.add(cardShowBtn2);
+        ButtonGroup btnShowGroup = new ButtonGroup();
+        btnShowGroup.add(cardShowBtn1);
+        btnShowGroup.add(cardShowBtn2);
+
+
+        settingContentPanel.setLayout(null);
+
+    }
+
+    //添加setting界面监听
+    public void addSettingActionListener(){
+        cardRadioBtn1.addActionListener(this);
+        cardRadioBtn2.addActionListener(this);
+        cardRadioBtn3.addActionListener(this);
+        backradioBtn1.addActionListener(this);
+        backradioBtn2.addActionListener(this);
+        backradioBtn3.addActionListener(this);
+        cardShowBtn1.addActionListener(this);
+        cardShowBtn2.addActionListener(this);
+        settingGetBackBtn.addActionListener(this);
+        settingSaveBackBtn.addActionListener(this);
+
+    }
+
+}
 
